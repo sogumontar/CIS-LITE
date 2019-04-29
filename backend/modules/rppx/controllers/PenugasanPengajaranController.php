@@ -159,15 +159,10 @@ class PenugasanPengajaranController extends Controller
     }
     public function actionPegawai(){
         if(null !== Yii::$app->request->post()){
-            $pegawai = HrdxPegawai::find()->select('*')->where(['pegawai_id' => 1])->asArray()->all();
-              
-            $arr=array();
-            $inc=1;
-            foreach($pegawai as $test){
-                $arr[$inc]=$test;
-                $inc++;
-            }
-
+            $staf=Staf::find()->select('pegawai_id')->asArray()->all();
+            
+                $pegawai = HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all();
+            
             return json_encode($pegawai);
         }else{
             return "Ajax failed";

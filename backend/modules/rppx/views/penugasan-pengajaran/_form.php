@@ -95,7 +95,7 @@ foreach ($viewAsDos as $test) {
                                 <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--'], ['id' => 'as'])->label('') ?>
                             </td>
                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                                <input type="number" class="form-control" name="" min="0" style="width: 50px;" id="loadDosen" >
+                                <input type="number" class="form-control" name="" min="0" style="width: 50px;" >
                             </td>
 
 
@@ -239,24 +239,25 @@ foreach ($viewAsDos as $test) {
                 success: function(data){
                     data = jQuery.parseJSON(data);
                     pegawais = '<option >--Assisten Dosen--</option>';
-                    for(var i =1; i < data.length; i++){
+                    for(var i =0; i < data.length; i++){
                         // document.write(data[i]['nama']);
                         pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
 
                     }
-                    // document.write(i)
                     tambah(baris);
                 }
             });
         }
 
         function tambah(baris){
-            $('#posAsdos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  style=\"width:140px;\" id=\"id_pegawai\" class=\"form-control\" name=\"-sss-\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
+            $('#posAsdos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  onchoose=\"loadDosen()\" style=\"width:140px;\" id=\"id_pegawai\" class=\"form-control\" name=\"-sss-\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
         }
         ",
         $this::POS_END);
     ?>
-
+    function loadDosen(){
+        alert("asd");
+    }
 </script>
 
 
