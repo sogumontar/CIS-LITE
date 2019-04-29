@@ -1,0 +1,28 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/itd/dev/go"
+		},
+		{
+			"path": "/Users/itd/dev/puro"
+		}
+	],
+	"settings":
+	{
+		"todoreview":
+		{
+			"exclude_folders":
+			[
+				"*.git",
+				"*vendor*",
+				"*assets*",
+				"*web/js/plugins/*",
+				"*web/css/plugins/*"
+			]
+		}
+	}
+}

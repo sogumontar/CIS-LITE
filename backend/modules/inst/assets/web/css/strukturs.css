@@ -1,0 +1,7 @@
+#empty {
+	color: red;
+}
+
+i.fa {
+	display:inline-block; /* chrome-fix */
+}

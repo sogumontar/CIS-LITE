@@ -1,0 +1,7 @@
+.bg-red a, .bg-yellow a, .bg-green a {
+   color: #fff
+}
+
+.bg-red a:hover, .bg-yellow a:hover, .bg-green a:hover {
+	color: rgba(255,255,255,0.75);
+}

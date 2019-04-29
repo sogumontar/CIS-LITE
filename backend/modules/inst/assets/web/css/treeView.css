@@ -1,0 +1,15 @@
+.nodeExample1 {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: 1px solid #000;
+    min-width: 200px;
+    padding: 3px;
+}
+
+.pegawai ul { margin-left: -22px; float: left; }
+
+.jabatan { font-weight: bold; }
+
+.nama { font-weight: bold; }
