@@ -46,16 +46,8 @@ $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
 </style>
 
 <?php
-$a=array();
-
-foreach ($viewAsDos as $test) {
-    $in=0;
-    $viewPengajarrr = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $test])->all(), 'pegawai_id', 'nama');
-    foreach ($viewPengajarrr as $tt) {
-        $a[$in]=$tt;
-        $in++;
-    }
-}
+$staf=Staf::find()->select('pegawai_id')->asArray()->all();
+$sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->all(), 'pegawai_id', 'nama');
 ?>
 <div class="col-md-8">
     <div class="scroll">
@@ -114,7 +106,7 @@ foreach ($viewAsDos as $test) {
 
                                     </td>
                                     <td style="padding-top: 0px;" >
-                                        <?= $form->field($model, 'pegawai_id')->dropDownList($a, ['prompt' => '--Assisten Dosen--'])->label('') ?>
+                                        <?= $form->field($model, 'pegawai_id')->dropDownList($sta, ['prompt' => '--Assisten Dosen--'])->label('') ?>
                                     </td>
 
                             <!-- <td>
@@ -182,7 +174,7 @@ foreach ($viewAsDos as $test) {
 
                                 <tr bgcolor="">
                                     <td><input type="text" value="<?= $q['nama'] ?>" disabled="" name="<?= $q['pegawai_id'] ?>"></td>
-                                    <td><input id="<?php echo $indikator; ?>" type="text" value="5" disabled="" name=""></td>
+                                    <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="5" disabled="" name=""></td>
                                 </tr>
                                 <?php $indikator++;
                             } ?>
@@ -192,17 +184,13 @@ foreach ($viewAsDos as $test) {
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                 </div>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-                <script type="text/javascript">
-    //using registerJs
+<?php $form = ActiveForm::end(); ?>
+
 
     <?php
     $this->registerJs(
-        "$(document).ready(function(){
-            dosen();
-        });
-        function dosen(baris){
+        "function dosen(baris){
             var a=baris;
             $.ajax({
                 url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawais']) . "',
@@ -218,20 +206,13 @@ foreach ($viewAsDos as $test) {
                     add(baris);
                 }
             });
-            document.getElementById(a).value=3;
         }
 
         function add(baris){
-            $('#pos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  style=\"width:140px;\" id=\"id_pegawai\" class=\"form-control\" name=\"-sss-\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
+            $('#pos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  style=\"width:140px;\" onChange=\"Dos(this)\" id=\"id_pegawai\" class=\"form-control\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
         }
-        ",
-        $this::POS_END);
-    ?>
-    <?php
-    $this->registerJs(
-        "$(document).ready(function(){
-            asdosen();
-        });
+        
+
         function asdosen(baris){
             $.ajax({
                 url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawai']) . "',
@@ -239,26 +220,36 @@ foreach ($viewAsDos as $test) {
                 success: function(data){
                     data = jQuery.parseJSON(data);
                     pegawais = '<option >--Assisten Dosen--</option>';
+                     
+                    var t=0;
                     for(var i =0; i < data.length; i++){
                         // document.write(data[i]['nama']);
                         pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
+                        asd=data[i]['nama'];
+                        t++;
 
                     }
-                    tambah(baris);
+                     tambah(baris);
+                    // asDos(baris);
                 }
             });
         }
 
         function tambah(baris){
-            $('#posAsdos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  onchoose=\"loadDosen()\" style=\"width:140px;\" id=\"id_pegawai\" class=\"form-control\" name=\"-sss-\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
+            $('#posAsdos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select onChange=\"asDos(this)\" style=\"width:140px;\" value=\"7\" id=\"baris\" class=\"form-control\" >'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
         }
+
+        function asDos(baris){
+            var ss=baris.options[baris.selectedIndex].value;
+            alert(ss);
+            document.getElementById(ss).value=0;
+        }
+        function Dos(baris){
+            alert(baris.options[baris.selectedIndex].value);
+        }
+
+
         ",
         $this::POS_END);
     ?>
-    function loadDosen(){
-        alert("asd");
-    }
-</script>
-
-
-<?php $form = ActiveForm::end(); ?>
+    
