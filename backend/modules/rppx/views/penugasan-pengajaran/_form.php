@@ -58,15 +58,17 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     <tr>
                         <td id="matakuliah">Mata Kuliah</td>
                         <td id="jumlahsks">Jumlah SKS</td>
+                        <td id="jumlahsks">Jumlah Tatap Muka</td>
+                        <td id="jumlahsks">Jumlah Kelas Riil</td>
                         <div id="headdosens">
-                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;">Dosen I</td>
-                            <td></td>
-                            <td id="loaddosen1" style="min-width: 62px;">Load</td>
+                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;">Nama Dosen</td>
+                            <td>%Dosen</td>
+                            <td id="loaddosen1" style="min-width: 62px;"></td>
 
                         </div>
-                        <td id="asdos1" style="min-width: 150px;">TA I</td>
+                        <td id="asdos1" style="min-width: 150px;"></td>
                         <td></td>
-                        <td id="loadasdos1" style="min-width: 62px;">Load</td>
+                        <td id="loadasdos1" style="min-width: 62px;"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,6 +85,12 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             <td style="max-width: 150px;padding-top: 25px;">
                                 <?= $matkul->sks; ?>
                             </td>
+                            <td>
+                                <input type="number" value="0" min="0"  id="jlhdos" style="margin-top: 12px; width: 70px;" class="form-control" name="">
+                            </td>
+                            <td>
+                                <input type="number" style="margin-top: 12px; width: 70px;" value="0" min="0" class="form-control" name="">
+                            </td>
                             <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--'], ['id' => 'as'])->label('') ?>
                             </td>
@@ -93,7 +101,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
 
                             <td style="max-width: 150px;padding-top: 20px;" id="pos<?php echo $jj; ?>">
                                 <a class="btn btn-primary" onclick="dosen(<?php echo $jj; ?>);"><i
-                                    class="fa fa-plus"> </i>s</a>
+                                    class="fa fa-plus"> </i></a>
                                 </td>
                                 <td><br>
                                     <p>Dosen</p>
@@ -105,6 +113,10 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                     <td colspan="2">
 
                                     </td>
+                                    <td>
+                                        <!-- <input type="number" value="0" min="0" id="jlhasdos" class="form-control" style="margin-top: 12px;" name=""> -->
+                                    </td>
+                                    <td></td>
                                     <td style="padding-top: 0px;" >
                                         <?= $form->field($model, 'pegawai_id')->dropDownList($sta, ['prompt' => '--Assisten Dosen--'])->label('') ?>
                                     </td>
