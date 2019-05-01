@@ -87,7 +87,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                 <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--'], ['id' => 'as'])->label('') ?>
                             </td>
                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                                <input type="number" class="form-control" name="" min="0" style="width: 50px;" >
+                                <input type="number" step=".1" class="form-control" name="" min="0" style="width: 70px;" >
                             </td>
 
 
@@ -114,7 +114,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                         </td> -->
                                         <td style="padding-top: 0px;">
                                             <!-- <?= $form->field($model, 'load')->textInput(['', 'contoh'])->label(''); ?> --><br>
-                                            <input type="number" class="form-control" min="0" id="loadAsdos" name="">
+                                            <input type="number" step=".1" class="form-control" min="0" id="loadAsdos" name="">
 
                                         </td>
                                         <td style="max-width: 150px;padding-top: 20px;" id="posAsdos<?php echo $jj ;?>">
@@ -185,71 +185,98 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                 </div>
 
-<?php $form = ActiveForm::end(); ?>
+                <?php $form = ActiveForm::end(); ?>
 
 
-    <?php
-    $this->registerJs(
-        "function dosen(baris){
-            var a=baris;
-            $.ajax({
-                url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawais']) . "',
-                type: 'POST',
-                success: function(data){
-                    data = jQuery.parseJSON(data);
-                    pegawais = '<option>--Pengajar--</option>';
+                <?php
+                $this->registerJs(
+                    "
 
-                    for(var i = 1; i < data.length; i++){
-                        pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
+                    function dosen(baris){
+                        var a=baris;
+                        $.ajax({
+                            url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawais']) . "',
+                            type: 'POST',
+                            success: function(data){
+                                data = jQuery.parseJSON(data);
+                                pegawais = '<option>--Pengajar--</option>';
 
-                    }
-                    add(baris);
-                }
-            });
-        }
+                                for(var i = 1; i < data.length; i++){
+                                    pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
 
-        function add(baris){
-            $('#pos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  style=\"width:140px;\" onChange=\"Dos(this)\" id=\"id_pegawai\" class=\"form-control\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
-        }
-        
+                                }
+                                add(baris);
+                            }
+                            });
+                        }
+                        var penanda=0;
+                        function add(baris){
+                            $('#pos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  style=\"width:140px;\" onChange=\"Dos(this)\" id=\"id_pegawai\" class=\"form-control\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:70px; margin-left:170px;\" onChange=\"input2(value)\" type=\"number\" step=\".1\" class=\"form-control\" width=\"50px\"></td>');
+                            penanda++;
 
-        function asdosen(baris){
-            $.ajax({
-                url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawai']) . "',
-                type: 'POST',
-                success: function(data){
-                    data = jQuery.parseJSON(data);
-                    pegawais = '<option >--Assisten Dosen--</option>';
-                     
-                    var t=0;
-                    for(var i =0; i < data.length; i++){
+                        }
+                        var indi=0;
+                        var tunjuk;
+                        function Dos(baris){
+                            indi=1;
+                            var ss=baris.options[baris.selectedIndex].value;
+                            alert(ss);
+                            document.getElementById(ss).value=0;
+                            tunjuk=ss;
+                        }
+                        function input2(val){
+                            if(indi===1){
+                                document.getElementById(tunjuk).value=val;
+                                }else{
+                                    alert('Pilih Dosen Dahulu');
+                                }
+                            }
+                            function asdosen(baris){
+                                $.ajax({
+                                    url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawai']) . "',
+                                    type: 'POST',
+                                    success: function(data){
+                                        data = jQuery.parseJSON(data);
+                                        pegawais = '<option >--Assisten Dosen--</option>';
+
+                                        var t=0;
+                                        for(var i =0; i < data.length; i++){
                         // document.write(data[i]['nama']);
-                        pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
-                        asd=data[i]['nama'];
-                        t++;
+                                            pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
+                                            asd=data[i]['nama'];
+                                            t++;
 
-                    }
-                     tambah(baris);
+                                        }
+                                        tambah(baris);
                     // asDos(baris);
-                }
-            });
-        }
+                                    }
+                                    });
+                                }
+                                var asdoss=0;
+                                function tambah(baris){
+                                    $('#posAsdos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select onChange=\"asDos(this)\" style=\"width:140px;\" value=\"7\" id=\"baris\" class=\"form-control\" >'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:70px; margin-left:170px;\" hidden=\"\" type=\"number\" min=\"0\" onChange=\"input(value)\" class=\"form-control\" step=\".1\" width=\"70px\" value=\"'+asdoss+'\"></td>');
+                                    asdoss++;
+                                    document.getElementById();
+                                }
+                                var indikat=0;
+                                var penunjuk;
+                                function asDos(baris){
+                                    indikat=1;
+                                    var ss=baris.options[baris.selectedIndex].value;
+                                    alert(ss);
+                                    document.getElementById(ss).value=0;
+                                    penunjuk=ss;
+                                }
+                                function input(val){
+                                    if(indikat===1){
+                                        document.getElementById(penunjuk).value=val;
+                                        }else{
+                                            alert('Pilih Dosen Dahulu');
+                                        }
+                                    }
 
-        function tambah(baris){
-            $('#posAsdos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select onChange=\"asDos(this)\" style=\"width:140px;\" value=\"7\" id=\"baris\" class=\"form-control\" >'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:50px; margin-left:170px;\" type=\"text\" class=\"form-control\" width=\"50px\"></td>');
-        }
 
-        function asDos(baris){
-            var ss=baris.options[baris.selectedIndex].value;
-            alert(ss);
-            document.getElementById(ss).value=0;
-        }
-        function Dos(baris){
-            alert(baris.options[baris.selectedIndex].value);
-        }
+                                    ",
+                                    $this::POS_END);
+                                    ?>
 
-
-        ",
-        $this::POS_END);
-    ?>
-    
