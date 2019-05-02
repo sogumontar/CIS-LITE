@@ -232,7 +232,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                         function Dos(baris){
                             indi=1;
                             var ss=baris.options[baris.selectedIndex].value;
-                            alert(ss);
+                            
                             document.getElementById(ss).value=0;
                             tunjuk=ss;
                         }
@@ -275,7 +275,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                 function asDos(baris){
                                     indikat=1;
                                     var ss=baris.options[baris.selectedIndex].value;
-                                    alert(ss);
+                                    
                                     document.getElementById(ss).value=0;
                                     penunjuk=ss;
                                 }
