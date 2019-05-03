@@ -86,16 +86,16 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                 <?= $matkul->sks; ?>
                             </td>
                             <td>
-                                <input type="number" value="0" min="0"  id="jlhdos" style="margin-top: 12px; width: 70px;" class="form-control" name="">
+                                <input type="number" value="0" min="0" onchange="tatapM()"  id="tatapMuka" style="margin-top: 12px; width: 70px;" class="form-control" name="">
                             </td>
                             <td>
-                                <input type="number" style="margin-top: 12px; width: 70px;" value="0" min="0" class="form-control" name="">
+                                <input type="number" style="margin-top: 12px; width: 70px;" id="riil" onchange="rils()" value="0" min="0" class="form-control" name="">
                             </td>
                             <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--'], ['id' => 'as'])->label('') ?>
+                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                                <input type="number" step=".1" class="form-control" name="" min="0" style="width: 70px;" >
+                                <input type="number" step=".1" onchange="input2(value)" class="form-control" name="" min="0" style="width: 70px;" >
                             </td>
 
 
@@ -118,7 +118,8 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                     </td>
                                     <td></td>
                                     <td style="padding-top: 0px;" >
-                                        <?= $form->field($model, 'pegawai_id')->dropDownList($sta, ['prompt' => '--Assisten Dosen--'])->label('') ?>
+
+                                        <?= $form->field($model, 'pegawai_id')->dropDownList($sta, ['prompt' => '--Assisten Dosen--' , 'onChange'=>'js:asDos(this);'])->label('') ?>
                                     </td>
 
                             <!-- <td>
@@ -126,7 +127,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                         </td> -->
                                         <td style="padding-top: 0px;">
                                             <!-- <?= $form->field($model, 'load')->textInput(['', 'contoh'])->label(''); ?> --><br>
-                                            <input type="number" step=".1" class="form-control" min="0" id="loadAsdos" name="">
+                                            <input type="number" step=".1" onchange="input(value)" class="form-control" min="0" id="loadAsdos" name="">
 
                                         </td>
                                         <td style="max-width: 150px;padding-top: 20px;" id="posAsdos<?php echo $jj ;?>">
@@ -229,6 +230,8 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                         }
                         var indi=0;
                         var tunjuk;
+                        var ttp=0;
+                        var ril=0;
                         function Dos(baris){
                             indi=1;
                             var ss=baris.options[baris.selectedIndex].value;
@@ -236,14 +239,29 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             document.getElementById(ss).value=0;
                             tunjuk=ss;
                         }
+                        function tatapM(){
+                            ttp=1;
+                           
+                        }
+                        function rils(){
+                            ril=1;
+                           
+                        }
                         function input2(val){
-                            if(indi===1){
-                                document.getElementById(tunjuk).value=val;
-                                }else{
-                                    alert('Pilih Dosen Dahulu');
-                                }
-                            }
-                            function asdosen(baris){
+                           
+
+                              if(indi != 1){
+                                    alert('Pilih Dosen');
+                              }else if(ttp===0){
+                                    alert('Entry Jumlah Tatap Muka');
+                              }else if(ril === 0 ){
+                                    alert('Entry Jumlah kelas Rill');
+                              }else{
+                                 document.getElementById(tunjuk).value=val;
+                              }
+                              
+                        }
+                        function asdosen(baris){
                                 $.ajax({
                                     url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawai']) . "',
                                     type: 'POST',
@@ -253,14 +271,14 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
 
                                         var t=0;
                                         for(var i =0; i < data.length; i++){
-                        // document.write(data[i]['nama']);
+                                        // document.write(data[i]['nama']);
                                             pegawais += '<option value=\"'+data[i]['pegawai_id']+'\">'+data[i]['nama']+'</option>';
                                             asd=data[i]['nama'];
                                             t++;
 
                                         }
                                         tambah(baris);
-                    // asDos(baris);
+                                        // asDos(baris);
                                     }
                                     });
                                 }
@@ -276,6 +294,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                     indikat=1;
                                     var ss=baris.options[baris.selectedIndex].value;
                                     
+                                    alert(ss);
                                     document.getElementById(ss).value=0;
                                     penunjuk=ss;
                                 }
@@ -283,7 +302,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                     if(indikat===1){
                                         document.getElementById(penunjuk).value=val;
                                         }else{
-                                            alert('Pilih Dosen Dahulu');
+                                            alert('Pilih Asisten Dosen Dahulu');
                                         }
                                     }
 

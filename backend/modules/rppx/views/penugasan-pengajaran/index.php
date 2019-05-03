@@ -18,7 +18,7 @@ $this->params['layout'] = 'full';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Penugasan Pengajaran', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Penugasan Pengajaran', ['menu'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
