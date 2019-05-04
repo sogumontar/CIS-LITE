@@ -23,6 +23,7 @@ $viewPengajar = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama
 $viewPengajarr = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
 $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
 
+
 ?>
 <style type="text/css">
     .scroll {
@@ -183,11 +184,31 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                 <td><label>Load Dosen</label></td>
                             </tr>
                             <?php $indikator = 0;
-                            foreach ($que as $q) { ?>
+                            $i=0;
+                           
+                                 $load[$i] = ArrayHelper::map(PenugasanPengajaran::find()->select('*')->where(['pegawai_id' => $key['pegawai_id']])->all(), 'pegawai_id', 'load');
+                           
+                            $i=0;
+                            foreach ($que as $key) {
+                                 
+                                 $i++;
+                            }
+                            // print_r($load);
+                            $indikatorr=0;
+                            foreach ($que as $q) {
+                                    $sss=Staf::find($q['pegawai_id'])->asArray()->all();
+                                   
+                                    echo $sss[$indikatorr]['staf_id'];
+                                    $indikatorr++;
+                                    if($indikatorr==3){
+                                        $indikatorr=0;
+                                    }
+
+                             ?>
 
                                 <tr bgcolor="">
                                     <td><input type="text" value="<?= $q['nama'] ?>" disabled="" name="<?= $q['pegawai_id'] ?>"></td>
-                                    <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="5" disabled="" name=""></td>
+                                    <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="<?php if(1==1){echo 0;}  ?>" disabled="" name=""></td>
                                 </tr>
                                 <?php $indikator++;
                             } ?>
