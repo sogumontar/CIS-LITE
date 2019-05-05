@@ -75,9 +75,11 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                 <tbody>
                     <?php $form = ActiveForm::begin();
                     $jj = 0;
+                    $ronaldo=0;;
+                    $jlhsks=array();
                     ?>
                     <?php foreach ($modelPengajaran as $key => $matkul) {
-
+                            $jlhsks[$ronaldo]=$matkul->sks;
                         ?>
                         <tr id="tambahRow" class="bodydosen">
                             <td style="max-width: 150px;padding-top: 25px;">
@@ -87,16 +89,16 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                 <?= $matkul->sks; ?>
                             </td>
                             <td>
-                                <input type="number" value="0" min="0" onchange="tatapM()"  id="tatapMuka" style="margin-top: 12px; width: 70px;" class="form-control" name="">
+                                <input type="number"  min="0" onchange="tatapM(value)"  id="tatapMuka" style="margin-top: 12px; width: 70px;" class="form-control" name="">
                             </td>
                             <td>
-                                <input type="number" style="margin-top: 12px; width: 70px;" id="riil" onchange="rils()" value="0" min="0" class="form-control" name="">
+                                <input type="number" style="margin-top: 12px; width: 70px;" id="riil" onchange="rils(value)"  min="0" class="form-control" name="">
                             </td>
                             <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                                <input type="number" step=".1" onchange="input2(value)" class="form-control" name="" min="0" style="width: 70px;" >
+                                <input type="number" step="1" max="100" onchange="input2(value,<?php echo $matkul->sks ;?>)" class="form-control" name="" min="0" style="width: 70px;" >
                             </td>
 
 
@@ -128,7 +130,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                         </td> -->
                                         <td style="padding-top: 0px;">
                                             <!-- <?= $form->field($model, 'load')->textInput(['', 'contoh'])->label(''); ?> --><br>
-                                            <input type="number" step=".1" onchange="input(value)" class="form-control" min="0" id="loadAsdos" name="">
+                                            <input type="number" step="1"  onchange="input(value,<?php echo $matkul->sks ;?>)" class="form-control" min="0" max="100" id="loadAsdos" name="">
 
                                         </td>
                                         <td style="max-width: 150px;padding-top: 20px;" id="posAsdos<?php echo $jj ;?>">
@@ -213,15 +215,21 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="" disabled="" name=""></td>
                         </tr>
                         <?php $indikator++;
-                        if($q['pegawai_id'] == $ppp[$penanda2-1]){?>
-                                
+                        if($q['pegawai_id'] == $ppp[$penanda2-1]){
+                                foreach($modelPengajaran as $tt){
+
+
+
+                                ?>
                                 <script type="text/javascript">
                                     var t=<?php echo  $ppp[$penanda2-1] ;?>;
-                                    
-                                    document.getElementById(t).value=5;
+                                    var skss= <?php echo  $tt->sks ;?>;
+                                    var tatapMuka2=document.getElementById(tatapMuka);
+                                    document.getElementById(t).value=skss+tatapMuka2;
                                 </script>
                                
                             <?php }
+                        }
                     } ?>
                 </table>
             </div>
@@ -268,31 +276,30 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     indi=1;
                     var ss=baris.options[baris.selectedIndex].value;
 
-                    document.getElementById(ss).value=0;
                     tunjuk=ss;
                 }
-                function tatapM(){
-                    ttp=1;
+                function tatapM(value){
+                    ttp=value;
 
                 }
-                function rils(){
-                    ril=1;
+                function rils(value){
+                    ril=value;
 
                 }
-                function input2(val){
-
-
-                  if(indi != 1){
-                    alert('Pilih Dosen');
-                    }else if(ttp===0){
-                        alert('Entry Jumlah Tatap Muka');
-                        }else if(ril === 0 ){
+                function input2(val,sks){
+                      if(indi != 1){
+                        alert('Pilih Dosen');
+                      }else if(ttp===0){
+                            alert('Entry Jumlah Tatap Muka');
+                      }else if(ril === 0 ){
                             alert('Entry Jumlah kelas Rill');
-                            }else{
-                               document.getElementById(tunjuk).value=val;
-                           }
+                      }else{
+                            var yy= sks+ ttp*sks +sks*ril ;
+                            var y=yy/3;
+                            document.getElementById(tunjuk).value=((sks+ ttp*sks +sks*ril)/3)*val;
+                      }
 
-                       }
+                }
                        function asdosen(baris){
                         $.ajax({
                             url: '" . \Yii::$app->urlManager->createUrl(['rppx/penugasan-pengajaran/pegawai']) . "',
@@ -325,18 +332,23 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                         function asDos(baris){
                             indikat=1;
                             var ss=baris.options[baris.selectedIndex].value;
-
                             alert(ss);
-                            document.getElementById(ss).value=0;
                             penunjuk=ss;
                         }
-                        function input(val){
-                            if(indikat===1){
-                                document.getElementById(penunjuk).value=val;
-                                }else{
-                                    alert('Pilih Asisten Dosen Dahulu');
-                                }
-                            }
+                        function input(val,sks){
+                                  if(indikat != 1){
+                                    alert('Pilih Assisten Dosen');
+                                  }else if(ttp===0){
+                                        alert('Entry Jumlah Tatap Muka');
+                                  }else if(ril === 0 ){
+                                        alert('Entry Jumlah kelas Rill');
+                                  }else{
+                                        var yy= sks+ ttp*sks +sks*ril ;
+                                        var y=yy/3;
+                                        document.write(y);
+                                        document.getElementById(petunjuk).value=((sks+ ttp*sks +sks*ril)/3)*val;
+                                  }    
+                        }
 
 
                             ",
