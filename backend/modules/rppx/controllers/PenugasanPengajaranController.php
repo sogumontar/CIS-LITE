@@ -56,9 +56,7 @@ class PenugasanPengajaranController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->render('view', ['model' => $this->findModel($id),]);
     }
 
     /**
@@ -167,5 +165,18 @@ class PenugasanPengajaranController extends Controller
         }else{
             return "Ajax failed";
         }
+    }
+    public function actionRequest(){
+        $searchModel = new PenugasanPengajaranSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('request', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionInsret(request $request){
+        echo 'tatapMuka';
+        die();
     }
 }
