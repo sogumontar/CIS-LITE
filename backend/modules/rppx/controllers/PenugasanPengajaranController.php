@@ -29,6 +29,8 @@ class PenugasanPengajaranController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'allow'=>true,
+                    'roles'=>['@'],
                 ],
             ],
         ];
@@ -78,7 +80,13 @@ class PenugasanPengajaranController extends Controller
         $baris=0;
         $colom=0;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->load2=1;
+            // var_dump($model->load);
+            // die();
+            $model->save(false);
+
             return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
         } else {
             return $this->render('create', [
@@ -90,6 +98,7 @@ class PenugasanPengajaranController extends Controller
                 'modelPengajaran' => $modelPengajaran,
                 'semester'=> $semester,
             ]);
+            echo $model;
         }
     }
 
@@ -101,19 +110,35 @@ class PenugasanPengajaranController extends Controller
      */
     public function actionUpdate($id)
     {
+        $model = new PenugasanPengajaran();
+        $modelPengajaran = Kuliah::find()->where(['sem' => 3])->all();
+        $jlhDosen = 1;
+        $jlhAsdos = 1;
+        $baris=0;
+        $colom=0;
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+              'model' => $model,
+                'jlhDosen'=>$jlhDosen,
+                'jlhAsdos'=>$jlhAsdos,
+                'baris'=>$baris,
+                'colom'=>$colom,
+                'modelPengajaran' => $modelPengajaran,
+                'semester'=> 3,
             ]);
         }
     }
 
     public function actionDekan(){
         return $this->render('dekan');
+    }
+    public function actionApprove(){
+        return $this->render('Approval');
     }
     public function actionXx(){
         return $this->render('dekan');
@@ -126,8 +151,12 @@ class PenugasanPengajaranController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        echo $id;   
+        // $this->findModel($id)->delete();
+        Yii::$app->db->createCommand()->delete('rppx_penugasan_pengajaran','penugasan_pengajaran_id='.$id)->execute();
 
+        // PenugasanPengajaran::findModel($id)->delete();
+        
         return $this->redirect(['index']);
     }
 
@@ -175,8 +204,13 @@ class PenugasanPengajaranController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionInsret(request $request){
-        echo 'tatapMuka';
-        die();
+    public function actionInsret(){
+       die();
+    }
+     public function actionTtg(){
+      return $this->render('data_convert');
+    }
+    public function actionConvert(){
+       return $this->render('data_convert');
     }
 }

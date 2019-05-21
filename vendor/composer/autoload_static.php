@@ -8,6 +8,8 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
 {
     public static $files = array (
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -24,6 +26,10 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
             'yii2fullcalendar\\' => 17,
+        ),
+        'w' => 
+        array (
+            'wbraganca\\dynamicform\\' => 22,
         ),
         'k' => 
         array (
@@ -42,6 +48,13 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
         array (
             'creocoder\\nestedsets\\' => 21,
             'cebe\\markdown\\' => 14,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\DomCrawler\\' => 29,
+            'Symfony\\Component\\CssSelector\\' => 30,
         ),
         'F' => 
         array (
@@ -94,6 +107,10 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
         array (
             0 => __DIR__ . '/..' . '/philippfrenzel/yii2fullcalendar',
         ),
+        'wbraganca\\dynamicform\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wbraganca/yii2-dynamicform',
+        ),
         'kartik\\tree\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-tree-manager',
@@ -129,6 +146,22 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
         'cebe\\markdown\\' => 
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\DomCrawler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dom-crawler',
+        ),
+        'Symfony\\Component\\CssSelector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/css-selector',
         ),
         'Faker\\' => 
         array (

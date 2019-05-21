@@ -1,11 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
+    use yii\helpers\ArrayHelper;
 
-use backend\modules\rppx\models\Kuliah;
-use backend\modules\rppx\models\HrdxPegawai;
-use backend\modules\rppx\models\Staf;
+    use backend\modules\rppx\models\Kuliah;
+    use backend\modules\rppx\models\HrdxPegawai;
+    use backend\modules\rppx\models\Staf;
 
 $ind = 0;
 $que = HrdxPegawai::find()->all();
@@ -41,16 +41,18 @@ $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
         background: white;
         overflow: scroll;
         height: 350px;
-
-
     }
 </style>
-
+ 
 <?php
 $staf=Staf::find()->select('pegawai_id')->asArray()->all();
 $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all(), 'pegawai_id', 'nama');
-?><a href="insret">
-<form method="post"  action="insret" >
+?>
+<?php $form = ActiveForm::begin();
+                    $jj = 0;
+                    $ronaldo=0;;
+                    $jlhsks=array();
+                    ?>
 <div class="col-md-8">
     <div class="scroll">
         <h3>Semester <?php echo $semester; ?></h3>
@@ -59,13 +61,18 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                 <thead>
                     <tr>
                         <td id="matakuliah"> Mata Kuliah </td>
-                        <td id="jumlahsks"> Jumlah SKS </td>
-                        <td id="jumlahsks"> Jumlah Tatap Muka </td>
-                        <td id="jumlahsks"> Jumlah Kelas Riil </td>
+                        <td id="jumlahsks"  > Jumlah SKS </td>
+                        <td id="jumlahsks" style="min-width: 150px;"> Jumlah Tatap Muka </td>
+                        <td id="jumlahsks" style="min-width: 150px;"> Jumlah Kelas Riil </td>
                         <div id="headdosens">
 
                             <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Dosen </td>
-                            <td> %Dosen </td>
+                            <td colspan="2" style="min-width: 150px;"> %Dosen 1</td>
+                            <td style="min-width: 150px;">%Dosen 2</td>
+                             <td colspan="2" style="min-width: 150px;">%Dosen 3</td>
+                             <td></td>
+                              <td colspan="2"> </td>
+                              <td></td>
                             <td id="loaddosen1" style="min-width: 62px;"></td>
 
                         </div>
@@ -75,77 +82,89 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $form = ActiveForm::begin();
-                    $jj = 0;
-                    $ronaldo=0;;
-                    $jlhsks=array();
-                    ?>
                     <?php foreach ($modelPengajaran as $key => $matkul) {
                         $jlhsks[$ronaldo]=$matkul->sks;
+                        $indikatorr=0;
                         ?>
                         <tr id="tambahRow" class="bodydosen">
                             <td style="max-width: 150px;padding-top: 25px;">
                                 <?php echo $matkul->nama_kul_ind; ?>
+                                 <?=$form->field($model , 'pengajaran_id')->textInput([
+                                 'type' => 'number',
+                                 'min'=> '0',
+                                 'value'=>$matkul->kuliah_id,
+                                 'disabled'=>true,
+                                 'onchange'=>'tatapM(value)'
+                            ])->label(false)?>
                             </td>
                             <td style="max-width: 150px;padding-top: 25px;">
                                 <?= $matkul->sks; ?>
                             </td>
-                            <td>
-                                <input type="number"  min="0" onchange="tatapM(value)"  name="tatapMuka" id="tatapMuka" style="margin-top: 12px; width: 70px;" class="form-control" name="">
+                            <td  style="max-width: 130px;padding-top: 20px;">
+                                <?=$form->field($model , 'kelas_tatap_muka')->textInput([
+                                 'type' => 'number',
+                                 'min'=> '0',
+                                 'onchange'=>'tatapM(value)'
+                            ])->label(false)?>
                             </td>
-                            <td>
-                                <input type="number" style="margin-top: 12px; width: 70px;" id="riil" onchange="rils(value)"  min="0" class="form-control" name="">
+                            <td  style="max-width: 130px;padding-top: 20px;">
+                                <?=$form->field($model, 'jumlah_kelas_riil')->textInput([
+                                 'type' => 'number',
+                                 'id'=>'riil',
+                                 'min'=>'0',
+                                 'onchange'=>'rils(value)'
+                            ])->label(false)?>
+
                             </td>
                             <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                                <input type="number" step="1" max="100" onchange="input2(value,<?php echo $matkul->sks ;?>)" class="form-control" name="" min="0" style="width: 70px;" >
+                               <?=$form->field($model, 'load')->textInput([
+                                 'type' => 'number',
+                                 'id'=>'riil',
+                                 'min'=>'0',
+                                 'onchange'=>'input2(value,"+echo $matkul->sks;+")'
+                            ])->label(false)?>
+                            </td>
+                              <td style="padding-top: 0px;" id="test">
+                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
 
-
-                            <td style="max-width: 150px;padding-top: 20px;" id="pos<?php echo $jj; ?>">
-                                <a class="btn btn-primary" onclick="dosen(<?php echo $jj; ?>,<?php echo $matkul->sks; ?>);"><i
-                                    class="fa fa-plus"> </i></a>
+                              <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                               <?=$form->field($model, 'load')->textInput([
+                                 'type' => 'number',
+                                 'id'=>'riil',
+                                 'min'=>'0',
+                                 'onchange'=>'input2(value,"+echo $matkul->sks;+")'
+                            ])->label(false)?>
                             </td>
+                              <td style="padding-top: 0px;" id="test">
+                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
+                            </td>
+
+                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                                
+                               <?=$form->field($model, 'role_pengajar_id')->textInput([
+                                 'type' => 'number',
+                                 'id'=>'riil',
+                                 'min'=>'0',
+                                 'onchange'=>'input2(value)'
+                            ])->label(false)?>
+                            </td>
+                  
+                            <td>
+
+                                <br>
+                              <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>  
+                        </td>
                             <td>
                                 <br>
                                 <p>Dosen</p>
                             </td>
 
                         </tr>
-                        <tr>
-                            <div class="bodydosen1">
-                                <td colspan="2">
-
-                                </td>
-                                <td>
-                                        <!-- <input type="number" value="0" min="0" id="jlhasdos" class="form-control" style="margin-top: 12px;" name=""> -->
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td style="padding-top: 0px;" >
-                                    <?= $form->field($model, 'pegawai_id')->dropDownList($sta, ['prompt' => '--Assisten Dosen--' , 'onChange'=>'js:asDos(this);'])->label('') ?>
-                                </td>
-
-                            <!-- <td>
-                                            <?= $form->field($model, 'role_pengajar_id')->dropDownList($view, ['prompt' => '---mata kuliah-']) ?>
-                                        </td> -->
-                                <td style="padding-top: 0px;">
-                                            <!-- <?= $form->field($model, 'load')->textInput(['', 'contoh'])->label(''); ?> --><br>
-                                    <input type="number" step="1"  onchange="input(value,<?php echo $matkul->sks ;?>)" class="form-control" min="0" max="100" id="loadAsdos" name="">
-
-                                </td>
-                                <td style="max-width: 150px;padding-top: 20px;" id="posAsdos<?php echo $jj ;?>">
-                                    <a class="btn btn-primary"onclick="asdosen(<?php echo $jj; ?>,<?php echo $matkul->sks ;?>);"><i class="fa fa-plus"> </i></a>
-                                </td>
-                                <td><br>
-                                    <p>Asisten Dosen</p>
-                                </td>
-                            </div>
-
-                        </tr>
+                       
                                 <?php $jj++;
                        } ?>
 
@@ -154,10 +173,8 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
             </table>
         </div>
     </div>
-</div>
-<button>create</button>
-</form>
-    <div class="col-md-4">
+</div><!-- 
+    <div class="col-md-4"> -->
         <div class="scroll2">
             <table>
                 <tr>
@@ -237,17 +254,10 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
 
                             <?php
                             }?>
-
             </table>
         </div>
     </div>
-    <div class="form-group" style="margin-left: 490px; margin-top: 370px; ">
-        <button class="btn btn-success">Create</button>
-        <!-- <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?> -->
-    </div>
-
-        <?php $form = ActiveForm::end(); ?>
-
+   
 
                 <?php
                 $this->registerJs(
@@ -274,7 +284,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                     var penanda=0;
                                     function add(baris,sks){
                                         var baris=baris;
-                                        alert(sks);
+                                        
                                         var skss=sks;
                                         $('#pos'+baris).before('<td><div style=\"margin-top:11.5px;\" class=\"form-group\"><div class=\"col-sm-4\"><select  style=\"width:140px;\" onChange=\"Dos(this)\" id=\"id_pegawai\" class=\"form-control\">'+pegawais+'</select></div><div class=\"col-sm-5\"></div><input style=\" width:70px; margin-left:170px;\" onChange=\"input2(value,'+sks+')\" type=\"number\" step=\"1\" class=\"form-control\" width=\"50px\"></td>');
                                             penanda++;
@@ -297,7 +307,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                         ril=value;
                                     }
                                     function input2(val,sks){
-                                        alert(sks);
+                                        
                                         if(indi != 1){
                                             alert('Pilih Dosen');
                                         }else if(ttp===0){
@@ -307,7 +317,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                         }else{
                                             var yy= sks+ ttp*sks +sks*ril ;
                                             var y=yy/3;
-                                            document.getElementById(tunjuk).value=((sks+ ttp*sks +sks*ril)/3)*(val/100);
+                                            document.getElementById(tunjuk).value=((3+ ttp*3 +3*ril)/3)*(val/100);
                                         }
                                     }
                                     function asdosen(baris,sks){
@@ -359,4 +369,10 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                     }",
     $this::POS_END);
 ?>
-
+<div class="form-group" style="margin-left: 490px; ">
+    <!-- <button class="btn btn-success">Create</button> -->
+   <!--    <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>   -->
+     
+</div>
+</form>
+<?php $form = ActiveForm::end(); ?>

@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
     	'jlhDosen'=>$jlhDosen,
         'jlhAsdos'=>$jlhAsdos,
     	'model' => $model,
-    	'baris'=>$baris,
-    	'colom'=>$colom,
+    	// 'baris'=>$baris,
+    	// 'colom'=>$colom,
     	'modelPengajaran' => $modelPengajaran,
     	'semester'=> $semester,
     ]) ?>
