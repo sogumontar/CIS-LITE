@@ -1,8 +1,8 @@
 /*!
  * @package   yii2-dialog
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
- * @version   1.0.1
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
+ * @version   1.0.3
  *
  * Provides a polyfill for javascript native alert, confirm, and prompt boxes. The BootstrapDialog will be used if
  * available or needed, else the javascript native dialogs will be rendered.
@@ -27,7 +27,7 @@ var KrajeeDialog;
     };
 
     parseOptions = function (options) {
-        return options && options.length !== 0 ? options : {};
+        return typeof(options) === 'object' ? options : {};
     };
 
     KrajeeDialog = function (useBsDialog, options, defaults) {
@@ -45,7 +45,7 @@ var KrajeeDialog;
         },
         getOpts: function (type) {
             var self = this;
-            return window.jQuery.extend({}, self.defaults[type], self.options);
+            return window.jQuery.extend(true, {}, self.defaults[type], self.options);
         },
         _dialog: function (type, message, callback) {
             var self = this, opts, out;
@@ -72,10 +72,11 @@ var KrajeeDialog;
                 window.BootstrapDialog.show(opts);
             }
         },
-        alert: function (message) {
+        alert: function (message, callback) {
             var self = this, opts = self.getOpts('alert');
             if (self.usePlugin()) {
                 opts.message = message;
+                opts.callback = callback;
                 window.BootstrapDialog.alert(opts);
             } else {
                 window.alert(message);
@@ -92,7 +93,7 @@ var KrajeeDialog;
         },
         bdPrompt: function (input, callback) {
             var self = this, msg = '', opts = self.getOpts('prompt'), cbOk, cbCancel, defaultButtons,
-                buttons, holder = '', i;
+                buttons, $inputDiv, $input, attr = '', i;
             cbOk = function (dialog) {
                 var data, $body = dialog.getModalBody();
                 data = $body.find("input")[0].value || '';
@@ -109,13 +110,29 @@ var KrajeeDialog;
             ];
             buttons = opts.buttons || [];
             if (typeof input === "object") {
+                $inputDiv = $(document.createElement('div'));
+                $input = $(document.createElement('input'));
+                if (input['name'] === undefined) {
+                    $input.attr('name', 'krajee-dialog-prompt');
+                }
+                if (input['type'] === undefined) {
+                    $input.attr('type', 'text');
+                }
+                if (input['class'] === undefined) {
+                    $input.addClass('form-control');
+                }
+                $.each(input, function(key, val) {
+                    if (key !== 'label') {
+                        $input.attr(key, val);
+                    }
+                });
                 if (input.label !== undefined) {
-                    msg = '<label for="krajee-dialog-prompt" class="control-label">' + input.label + '</label>';
+                    msg = '<label for="' + $input.attr('name') + '" class="control-label">' + input.label + '</label>';
                 }
-                if (input.placeholder !== undefined) {
-                    holder = ' placeholder="' + input.placeholder + '"';
-                }
-                msg += '<input type="text" name="krajee-dialog-prompt" class="form-control"' + holder + '>';
+                $inputDiv.append($input);
+                msg += $inputDiv.html();
+                $input.remove();
+                $inputDiv.remove();
             } else {
                 msg = input;
             }

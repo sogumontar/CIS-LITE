@@ -140,6 +140,9 @@ class PenugasanPengajaranController extends Controller
     public function actionApprove(){
         return $this->render('Approval');
     }
+    public function actionApprovegbk(){
+        return $this->render('ApprovalByGBK');
+    }
     public function actionXx(){
         return $this->render('dekan');
     }
@@ -212,5 +215,35 @@ class PenugasanPengajaranController extends Controller
     }
     public function actionConvert(){
        return $this->render('data_convert');
+    }
+    //Approve request Penugasan Pengajaran Oleh Dekan
+    //$idAkun=id request yanng telah di parsing
+    public function actionApprover($idAkun){
+     Yii::$app->db->createCommand('update rppx_penugasan_pengajaran set approved=1 where penugasan_pengajaran_id='.$idAkun)->execute();
+        return $this->render('Approval');
+
+    }
+
+    //Reject request Penugasan Pengajaran Oleh Dekan
+    //$idAkun=id request yanng telah di parsing
+     public function actionRejecter($idAkun){
+     Yii::$app->db->createCommand('update rppx_penugasan_pengajaran set approved=2 where penugasan_pengajaran_id='.$idAkun)->execute();
+        return $this->render('Approval');
+
+    }
+
+    //Approve request Penugasan Pengajaran Oleh Kepala GBK
+    //$idAkun=id request yanng telah di parsing
+    public function actionGbkapprove($idAkun){
+     Yii::$app->db->createCommand('update rppx_penugasan_pengajaran set gbk_approved=1 where penugasan_pengajaran_id='.$idAkun)->execute();
+        return $this->render('ApprovalByGBK');
+
+    }
+
+    //Reject request Penugasan Pengajaran Oleh Kepala GBK
+    //$idAkun=id request yanng telah di parsing
+    public function actionGbkreject($idAkun){
+     Yii::$app->db->createCommand('update rppx_penugasan_pengajaran set gbk_approved=2 where penugasan_pengajaran_id='.$idAkun)->execute();
+        return $this->render('ApprovalByGBK');
     }
 }
