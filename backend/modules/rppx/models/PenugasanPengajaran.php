@@ -65,8 +65,8 @@ class PenugasanPengajaran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pengajaran_id', 'pegawai_id', 'role_pengajar_id', 'is_fulltime', 'deleted'], 'integer'],
-            [['role_pengajar_id'], 'required'],
+            [['pengajaran_id', 'pegawai_id', 'role_pengajar_id','jumlah_kelas_riil','kelas_tatap_muka', 'is_fulltime','load','load2','load3', 'deleted'], 'integer'],
+            [['pegawai_id'], 'required'],
             [['start_date', 'end_date', 'deleted_at', 'created_at', 'updated_at'], 'safe'],
             [['deleted_by', 'created_by', 'updated_by'], 'string', 'max' => 32],
             [['pengajaran_id'], 'exist', 'skipOnError' => true, 'targetClass' => AdakPengajaran::className(), 'targetAttribute' => ['pengajaran_id' => 'pengajaran_id']],

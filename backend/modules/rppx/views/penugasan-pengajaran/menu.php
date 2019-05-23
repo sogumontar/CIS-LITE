@@ -1,5 +1,6 @@
 <?php
     use yii\helpers\Url;
+    use backend\modules\rppx\models\AdakPengajaran;
 
     $this->title = 'Menu';
 $this->params['breadcrumbs'][] = $this->title;
@@ -10,7 +11,13 @@ $this->params['layout'] = 'full';
     $d=date("D , d  M  Y");
         // $date=date("D/M/Y");
     ?>
-    <p><?php echo $d."<br><br><br><br>"; ?></p>
+    <p><?php echo $d."<br><br><br><br>"; 
+
+    $prod;
+    ?></p>
+    <?php 
+
+    ?>
     <?php
 
      $prodi="";

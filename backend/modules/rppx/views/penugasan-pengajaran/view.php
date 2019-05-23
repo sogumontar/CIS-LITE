@@ -16,6 +16,7 @@ $this->params['layout'] = 'full';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?php echo $model->penugasan_pengajaran_id;?> 
         <?= Html::a('Update', ['update', 'id' => $model->penugasan_pengajaran_id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->penugasan_pengajaran_id], [
             'class' => 'btn btn-danger',

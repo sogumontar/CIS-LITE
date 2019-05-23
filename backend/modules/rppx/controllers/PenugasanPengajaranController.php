@@ -70,6 +70,52 @@ class PenugasanPengajaranController extends Controller
     public function actionMenu(){
         return $this->render('menu');
     }
+    public function actionCreateasdos($semester){
+          $model = new PenugasanPengajaran();
+        $modelPengajaran = Kuliah::find()->where(['sem' => $semester])->all();
+        $jlhDosen = 1;
+        $jlhAsdos = 1;
+        $baris=0;
+        $colom=0;
+        die();
+           if ($model->load(Yii::$app->request->post())) {
+
+            // var_dump($model->load);
+            // var_dump($model->load);
+            // die();
+            if($model->role_pengajar_id==""){
+                $model->role_pengajar_id=0;
+            }
+            if($model->role_pengajar_id3==""){
+                $model->role_pengajar_id3=0;
+            }
+            // echo $model->pengajaran_id;
+             Yii::$app->db->createCommand('update krkm_kuliah set stat_created=1 where kuliah_id='.$model->pengajaran_id)->execute();
+            $model->save(false);
+
+            // return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
+            return $this->render('createAsdos', [
+                'model' => $model,
+                'jlhDosen'=>$jlhDosen,
+                'jlhAsdos'=>$jlhAsdos,
+                'baris'=>$baris,
+                'colom'=>$colom,
+                'modelPengajaran' => $modelPengajaran,
+                'semester'=> $semester,
+            ]);
+        } else {
+              return $this->render('createAsdos', [
+                'model' => $model,
+                'jlhDosen'=>$jlhDosen,
+                'jlhAsdos'=>$jlhAsdos,
+                'baris'=>$baris,
+                'colom'=>$colom,
+                'modelPengajaran' => $modelPengajaran,
+                'semester'=> $semester,
+            ]);
+        }
+
+    }
 
     public function actionCreate($semester)
     {
@@ -79,15 +125,31 @@ class PenugasanPengajaranController extends Controller
         $jlhAsdos = 1;
         $baris=0;
         $colom=0;
-
         if ($model->load(Yii::$app->request->post())) {
 
-            $model->load2=1;
+            // var_dump($model->load);
             // var_dump($model->load);
             // die();
+            if($model->role_pengajar_id==""){
+                $model->role_pengajar_id=0;
+            }
+            if($model->role_pengajar_id3==""){
+                $model->role_pengajar_id3=0;
+            }
+            // echo $model->pengajaran_id;
+             Yii::$app->db->createCommand('update krkm_kuliah set stat_created=1 where kuliah_id='.$model->pengajaran_id)->execute();
             $model->save(false);
 
-            return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
+            // return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
+             return $this->render('create', [
+                'model' => $model,
+                'jlhDosen'=>$jlhDosen,
+                'jlhAsdos'=>$jlhAsdos,
+                'baris'=>$baris,
+                'colom'=>$colom,
+                'modelPengajaran' => $modelPengajaran,
+                'semester'=> $semester,
+            ]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -98,7 +160,6 @@ class PenugasanPengajaranController extends Controller
                 'modelPengajaran' => $modelPengajaran,
                 'semester'=> $semester,
             ]);
-            echo $model;
         }
     }
 
@@ -111,6 +172,22 @@ class PenugasanPengajaranController extends Controller
     public function actionUpdate($id)
     {
         $model = new PenugasanPengajaran();
+        $kul_id=0;
+        $sems=0;
+        $test=PenugasanPengajaran::find()->where('penugasan_pengajaran_id='.$id)->all();
+        foreach ($test as $key) {
+         
+         $kul_id= $key['pengajaran_id'];
+
+        }
+        $testting=Kuliah::find()->where('kuliah_id='.$kul_id)->all();
+        foreach ($testting as $key) {
+         
+            echo $sems=$key['sem'];
+
+        }
+        // die();
+
         $modelPengajaran = Kuliah::find()->where(['sem' => 3])->all();
         $jlhDosen = 1;
         $jlhAsdos = 1;
@@ -129,7 +206,7 @@ class PenugasanPengajaranController extends Controller
                 'baris'=>$baris,
                 'colom'=>$colom,
                 'modelPengajaran' => $modelPengajaran,
-                'semester'=> 3,
+                'semester'=> $sems,
             ]);
         }
     }

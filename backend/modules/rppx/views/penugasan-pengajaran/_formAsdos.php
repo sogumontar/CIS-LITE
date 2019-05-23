@@ -19,8 +19,10 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 $view = ArrayHelper::map(Kuliah::find()->all(), 'kode_mk', 'nama_kul_ind');
 $vieww = ArrayHelper::map(AdakPengajaran::find()->all(), 'pengajaran_id', 'kuliah_id');
-$viewPengajar = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
-$viewPengajar2 = ArrayHelper::map(Kuliah::find()->where('stat_created=0')->all(), 'kuliah_id', 'nama_kul_ind');
+$staf=Staf::find()->select('pegawai_id')->asArray()->all();
+$viewPengajar = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all(), 'pegawai_id', 'nama');
+
+$viewPengajar2 = ArrayHelper::map(Kuliah::find()->where('stat_asdos_created=0')->all(), 'kuliah_id', 'nama_kul_ind');
 $viewPengajarr = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
 $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
 
@@ -47,6 +49,7 @@ $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
  
 <?php
 $staf=Staf::find()->select('pegawai_id')->asArray()->all();
+$dataStaf=HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all();
 $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all(), 'pegawai_id', 'nama');
 ?>
 <?php $form = ActiveForm::begin();
@@ -55,7 +58,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     $jlhsks=array();
                     ?>
 <div class="col-md-8">
-    <h2>Penugasan Dosen</h2>
+    <h2>Penugasan Assisten Dosen</h2>
     <div class="scroll">
         <h3>Semester <?php echo $semester; ?></h3>
         <div class="col">
@@ -63,15 +66,15 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                 <thead>
                     <tr>
                         <td id="matakuliah" style="min-width: 150px;"> Mata Kuliah </td>
-                        <td id="jumlahsks" > Jumlah SKS </td>
+                        <!-- <td id="jumlahsks"  > Jumlah SKS </td> -->
                         <td id="jumlahsks" style="min-width: 150px;"> Jumlah Tatap Muka </td>
                         <td id="jumlahsks" style="min-width: 150px;"> Jumlah Kelas Riil </td>
                         <div id="headdosens">
 
-                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Dosen </td>
-                            <td colspan="2" style="min-width: 150px;"> %Dosen 1</td>
-                            <td style="min-width: 150px;">%Dosen 2</td>
-                             <td colspan="2" style="min-width: 150px;">%Dosen 3</td>
+                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Assisten Dosen </td>
+                            <td colspan="2" style="min-width: 150px;"> %Assisten Dosen 1</td>
+                            <td style="min-width: 150px;">%Assisten Dosen 2</td>
+                             <td colspan="2" style="min-width: 150px;">%Asissten Dosen 3</td>
                              <td></td>
                               <td colspan="2"> </td>
                               <td></td>
@@ -87,20 +90,9 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                   
                         <tr id="tambahRow" class="bodydosen">
                            <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'pengajaran_id')->dropDownList($viewPengajar2, ['prompt' => '--Mata Kuliah--','onChange'=>'js:so(value);'])->label('') ?>
+                                <?= $form->field($model, 'pengajaran_id')->dropDownList($viewPengajar2, ['prompt' => '--Mata Kuliah--','onChange'=>'js:Dos(this);'])->label('') ?>
                            
-                            <td style="max-width: 150px;padding-top: 25px;">
-                              <input type="text" id="jumlahs" name="" disabled="">
-                              
-                                <script type="text/javascript">
-                                    function so(value){
-                                        
-                                        document.getElementById('jumlahs').value=value;
-                                    }
-                                </script>
-                            </td>
-                             </td>
-                           
+                          
                             <td  style="max-width: 130px;padding-top: 20px;">
                                 <?=$form->field($model , 'kelas_tatap_muka')->textInput([
                                  'type' => 'number',
@@ -166,11 +158,11 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
             <table>
                 <tr>
                     <td>
-                        <label>Nama Dosen</label>
+                        <label>Nama </label>
                     </td>
 
                     <td>
-                        <label>Load Dosen</label>
+                        <label>Load </label>
                     </td>
                 </tr>
                     <?php $indikator = 0;
@@ -193,7 +185,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
 
                     }
                     $ttg=1;
-                    foreach ($que as $q) {
+                    foreach ($dataStaf as $q) {
 
                         $jlhL=PenugasanPengajaran::find()->where('pegawai_id='.$q['pegawai_id'])->all();
                         foreach ($jlhL as $key ) {
