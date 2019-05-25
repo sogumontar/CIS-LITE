@@ -5,8 +5,11 @@ namespace backend\modules\rppx\controllers;
 use backend\modules\cist\models\Pegawai;
 use Yii;
 use backend\modules\rppx\models\PenugasanPengajaran;
+use backend\modules\rppx\models\PenugasanPengajaranAsdos;
 use backend\modules\rppx\models\AdakPengajaran;
-use backend\modules\rppx\models\Kuliah;
+use backend\modules\rppx\models\Kuliah; 
+use backend\modules\rppx\models\Kelas; 
+use backend\modules\rppx\models\Prodi; 
 use backend\modules\rppx\models\search\PenugasanPengajaranSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -70,14 +73,26 @@ class PenugasanPengajaranController extends Controller
     public function actionMenu(){
         return $this->render('menu');
     }
+    public function actionMenuasdos(){
+        return $this->render('menuAsdos');
+    }
+    public function actionIndexasdos(){
+           $searchModel = new PenugasanPengajaranSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('indesAsdos', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     public function actionCreateasdos($semester){
-          $model = new PenugasanPengajaran();
+        $model = new PenugasanPengajaranAsdos();
         $modelPengajaran = Kuliah::find()->where(['sem' => $semester])->all();
         $jlhDosen = 1;
         $jlhAsdos = 1;
         $baris=0;
         $colom=0;
-        die();
+        
            if ($model->load(Yii::$app->request->post())) {
 
             // var_dump($model->load);
@@ -89,11 +104,9 @@ class PenugasanPengajaranController extends Controller
             if($model->role_pengajar_id3==""){
                 $model->role_pengajar_id3=0;
             }
-            // echo $model->pengajaran_id;
              Yii::$app->db->createCommand('update krkm_kuliah set stat_created=1 where kuliah_id='.$model->pengajaran_id)->execute();
             $model->save(false);
 
-            // return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
             return $this->render('createAsdos', [
                 'model' => $model,
                 'jlhDosen'=>$jlhDosen,
@@ -126,21 +139,14 @@ class PenugasanPengajaranController extends Controller
         $baris=0;
         $colom=0;
         if ($model->load(Yii::$app->request->post())) {
-
-            // var_dump($model->load);
-            // var_dump($model->load);
-            // die();
             if($model->role_pengajar_id==""){
                 $model->role_pengajar_id=0;
             }
             if($model->role_pengajar_id3==""){
                 $model->role_pengajar_id3=0;
             }
-            // echo $model->pengajaran_id;
              Yii::$app->db->createCommand('update krkm_kuliah set stat_created=1 where kuliah_id='.$model->pengajaran_id)->execute();
             $model->save(false);
-
-            // return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
              return $this->render('create', [
                 'model' => $model,
                 'jlhDosen'=>$jlhDosen,
@@ -175,27 +181,23 @@ class PenugasanPengajaranController extends Controller
         $kul_id=0;
         $sems=0;
         $test=PenugasanPengajaran::find()->where('penugasan_pengajaran_id='.$id)->all();
+        $kul=0;
         foreach ($test as $key) {
          
          $kul_id= $key['pengajaran_id'];
 
         }
         $testting=Kuliah::find()->where('kuliah_id='.$kul_id)->all();
-        foreach ($testting as $key) {
-         
-            echo $sems=$key['sem'];
-
+        foreach ($testting as $key ) {
+            $kul=$key['sem'];
         }
-        // die();
 
-        $modelPengajaran = Kuliah::find()->where(['sem' => 3])->all();
+        $modelPengajaran = Kuliah::find()->where(['sem' => $kul])->all();
         $jlhDosen = 1;
         $jlhAsdos = 1;
         $baris=0;
         $colom=0;
-
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->penugasan_pengajaran_id]);
         } else {
@@ -206,7 +208,7 @@ class PenugasanPengajaranController extends Controller
                 'baris'=>$baris,
                 'colom'=>$colom,
                 'modelPengajaran' => $modelPengajaran,
-                'semester'=> $sems,
+                'semester'=> $kul,
             ]);
         }
     }
@@ -231,7 +233,9 @@ class PenugasanPengajaranController extends Controller
      */
     public function actionDelete($id)
     {
+
         echo $id;   
+        die();
         // $this->findModel($id)->delete();
         Yii::$app->db->createCommand()->delete('rppx_penugasan_pengajaran','penugasan_pengajaran_id='.$id)->execute();
 
@@ -284,14 +288,99 @@ class PenugasanPengajaranController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionInsret(){
-       die();
+    public function actionInsret($id){
+         Yii::$app->db->createCommand()->delete('rppx_penugasan_pengajaran','penugasan_pengajaran_id='.$id)->execute();
+
+        // PenugasanPengajaran::findModel($id)->delete();
+        
+        return $this->redirect(['index']);
+        echo $id;
+       
     }
      public function actionTtg(){
       return $this->render('data_convert');
     }
     public function actionConvert(){
-       return $this->render('data_convert');
+        $data=PenugasanPengajaran::find()->all();
+
+
+        // header("Content-type: application/vnd-ms-excel");
+        // header("Content-Disposition: fdf_get_attachment(fdf_document, fieldname, savepath)nt; filename=Data Pegawai.xls");
+        echo "<h1></h1>";
+        echo '<table border="1">
+        <tr ><td colspan="9"><center><h1>Penugasan Pengajaran</h1></center></td></tr>
+        <tr>
+            <th>Prodi</th>
+            <th>Semester</th>
+            <th>Kode MK</th>
+            <th>Nama Mata Kuliah</th>
+            <th>Short Name</th>
+            <th>Jumlah Kelas Riil</th>
+            <th>SKS</th>
+            <th>Kelas Tatap Muka</th>
+            <th>Dosen</th>
+        </tr>';
+        foreach($data as $dd){
+                $pId=HrdxPegawai::find()->where('pegawai_id = '.$dd['pegawai_id'])->all();
+                $pengajaran=AdakPengajaran::find()->where('pengajaran_id = '.$dd['pengajaran_id'])->all();
+                $kelas = Kelas::find()->where('kelas_id = '.$dd['kelas'])->all();
+        echo '<tr> <td>';
+            foreach($kelas as $kk){
+                    $prodi = Prodi::find()->where('ref_kbk_id = '.$kk['prodi_id'])->all();
+                    foreach($prodi as $pr){
+                        echo $pr['singkatan_prodi'];
+                    }
+                }
+                echo '</td> <td>';
+                foreach($pengajaran as $pp){
+                $kuliah = Kuliah::find()->where('kuliah_id = '.$pp['kuliah_id'])->all();
+                foreach($kuliah as $ku){
+                    echo $ku['sem'];
+                }
+            }
+             echo '</td><td>'; 
+                foreach($pengajaran as $pp){
+                    $kuliah = Kuliah::find()->where('kuliah_id = '.$pp['kuliah_id'])->all();
+                    foreach($kuliah as $kul){
+                        echo $kul['kode_mk'];
+                    }
+                }
+            echo '</td><td>'; 
+                foreach($pengajaran as $pp){
+                    $kuliah = Kuliah::find()->where('kuliah_id = '.$pp['kuliah_id'])->all();
+                    foreach($kuliah as $kul){
+                        echo $kul['nama_kul_ind'];
+                    }
+                }
+            
+            echo '</td><td>';
+            foreach($pengajaran as $pp){
+                $kuliah = Kuliah::find()->where('kuliah_id = '.$pp['kuliah_id'])->all();
+                foreach($kuliah as $ku){
+                    echo $ku['short_name'];
+                }
+
+            }
+            echo'</td><td>';
+            echo $dd['jumlah_kelas_riil']; 
+            echo '</td><td>';
+            foreach($pengajaran as $pp){
+                $kuliah = Kuliah::find()->where('kuliah_id = '.$pp['kuliah_id'])->all();
+                foreach($kuliah as $ku){
+                    echo $ku['sks'];
+                }
+            }
+                    
+            echo '</td><td>';
+            echo $dd['kelas_tatap_muka']; 
+            echo '</td><td>';
+                foreach($pId as $p){
+                        echo $p['nama'];
+                }
+            
+            echo '</td></tr>';
+        }  
+    echo '</table>'; 
     }
     //Approve request Penugasan Pengajaran Oleh Dekan
     //$idAkun=id request yanng telah di parsing

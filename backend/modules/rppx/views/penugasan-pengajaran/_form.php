@@ -108,6 +108,8 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                  'onchange'=>'tatapM(value)'
                             ])->label(false)?>
                             </td>
+                        </tr>
+                        <tr>
                             <td  style="max-width: 130px;padding-top: 20px;">
                                 <?=$form->field($model, 'jumlah_kelas_riil')->textInput([
                                  'type' => 'number',

@@ -110,10 +110,10 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
 
                             </td>
                             <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
+                                <?= $form->field($model, 'asdos1')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                               <?=$form->field($model, 'load')->textInput([
+                               <?=$form->field($model, 'load1')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
@@ -121,7 +121,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             ])->label(false)?>
                             </td>
                               <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'role_pengajar_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
+                                <?= $form->field($model, 'asdos2')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
 
                               <td style="padding-top: 0px;" id="test2" width="200px"><br>
@@ -133,7 +133,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             ])->label(false)?>
                             </td>
                               <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'role_pengajar_id3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
+                                <?= $form->field($model, 'asdos3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
                              <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load3')->textInput([

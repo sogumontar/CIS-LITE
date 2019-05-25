@@ -5,6 +5,7 @@ use backend\modules\rppx\models\Kuliah;
 use backend\modules\rppx\models\HrdxPegawai;
 use backend\modules\rppx\models\Staf;
 use backend\modules\rppx\models\PenugasanPengajaran;
+use backend\modules\rppx\models\PenugasanPengajaranAsdos;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\modules\rppx\assets\AppAsset;
@@ -27,10 +28,10 @@ $this->params['layout'] = 'full';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Penugasan Pengajaran', ['menu'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('New', ['menuasdos'], ['class' => 'btn btn-success']) ?>
     </p>
      <p  align="right">Convert Data ke<a href="penugasan-pengajaran/convert"> Excel</a></p>
-     <a href="indexasdos" class="fa fa-female"><button class="btn btn-primary">Assisten Dosen</button></a>
+     <a href="index" class="fa fa-female"><button class="btn btn-primary"> Dosen</button></a>
     <table>
         <b><hr></b>
         <tr >
@@ -46,36 +47,49 @@ $this->params['layout'] = 'full';
         
             <?php
             $id_login=1;
-            $variable=PenugasanPengajaran::find()->where('request_by='.$id_login    )->all();
+            $variable=PenugasanPengajaranAsdos::find()->where('request_by='.$id_login    )->all();
                 foreach ($variable as $key ) {
-                    $var=HrdxPegawai::find()->where('pegawai_id='.$key['pegawai_id'])->all();
-                    $varDos2=HrdxPegawai::find()->where('pegawai_id='.$key['role_pengajar_id'])->all();
-                    $varDos3=HrdxPegawai::find()->where('pegawai_id='.$key['role_pengajar_id3'])->all();
+                    echo $key['asdos2'];
+                    $var=Staf::find()->where('staf_id='.$key['asdos1'])->all();
+                    $varDos2=Staf::find()->where('staf_id='.$key['asdos2'])->all();
+                    $varDos3=Staf::find()->where('staf_id='.$key['asdos3'])->all();
                     $varMatkul=Kuliah::find()->where('kuliah_id='.$key['pengajaran_id'])->all();
                     foreach ($varMatkul as $ket) {
                      ?>
                      <tr>
                         <td><p><?php echo $ket['nama_kul_ind']; ?></p></td>
                      <?php    
-
-                        
                     }
                     foreach ($var as $ket) {
+                        $nama=HrdxPegawai::find()->where('pegawai_id='.$ket['pegawai_id'])->all();
+                        foreach ($nama as $keys ) {
+                            
+                        
                      ?>
-                    <td><p><?php echo $ket['nama']; ?></p></td>
-                     <?php  } ?>
-                     <td><p><?php echo $key['load']; ?></p></td>
+                    <td><p><?php echo $keys['nama']; ?></p></td>
+                     <?php 
+                        }
+                    } ?>
+                     <td><p><?php echo $key['load1']; ?></p></td>
                     <?php 
                     foreach ($varDos2 as $ket) {
+                        $nama=HrdxPegawai::find()->where('pegawai_id='.$ket['pegawai_id'])->all();
+                        foreach ($nama as $keys) {
+                            
+                        
                      ?>
-                    <td><p><?php echo $ket['nama']; ?></p></td>
-                     <?php }?>
+                    <td><p><?php echo $keys['nama']; ?></p></td>
+                     <?php } }?>
                     <td><p><?php echo $key['load2']; ?></p></td>
                     <?php
                     foreach ($varDos3 as $ket) {
+                        $nama=HrdxPegawai::find()->where('pegawai_id='.$ket['pegawai_id'])->all();
+                        foreach ($nama as $keys) {
+                            
+                        
                      ?>
-                    <td><p><?php echo $ket['nama']; ?></p></td>
-                     <?php } ?>
+                    <td><p><?php echo $keys['nama']; ?></p></td>
+                     <?php } } ?>
                      <td><p><?php echo $key['load3']; ?></p></td>
                      <td><p><?php echo $key['created_at']; ?></p></td>
                      <td><a class="fa fa-check" href="<?=Url::toRoute(['update','id'=>$key['penugasan_pengajaran_id']]) ?>" ></a></td>
@@ -94,9 +108,11 @@ $this->params['layout'] = 'full';
         <canvas id="myChart"></canvas>
     </div>
     <?php 
-        $dataBar=HrdxPegawai::find()->all();
+        $dataBar=Staf::find()->all();
     ?>
-    <script>
+</div>
+
+<script>
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
@@ -111,7 +127,7 @@ $this->params['layout'] = 'full';
                         $query = (new \yii\db\Query())->from('rppx_penugasan_pengajaran');
                         $sum = $query->sum('pegawai_id');
                         // echo $sum;
-                        echo ($dat['ref_kbk_id']);
+                        echo ($dat['pegawai_id']);
                         ?>,
                         
                     <?php } ?>
@@ -183,7 +199,4 @@ $this->params['layout'] = 'full';
                 }
             }
         });
-    </script>
-    
-   
-</div>
+    </script> 
