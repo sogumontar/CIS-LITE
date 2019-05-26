@@ -1,42 +1,46 @@
 <?php
     use yii\helpers\Url;
     use backend\modules\rppx\models\AdakPengajaran;
+    use backend\modules\rppx\models\Kelas; 
+    use backend\modules\rppx\models\Prodi;
 
-    $this->title = 'Menu';
+$this->title = 'Kelas';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['layout'] = 'full';
 ?>
-
 <div class="penugasan-pengajarann-menu">
     <?php 
     $d=date("D , d  M  Y");
         // $date=date("D/M/Y");
     ?>
-    <p><?php echo $d."<br><br>"; 
+    <p><?php echo $d."<br><br><br><br>"; 
 
     $prod;
     ?></p>
-        <button class="btn btn-primary" disabled="">Semester Ganjil</button>
-          <button class="btn btn-primary">Semester Genap</button>
-        <br><br><br>
-
     <?php 
-echo $_GET['kelas'];
+
     ?>
     <?php
-
+    $idLog=1;
+     $prod=Prodi::find()->where('kepala_id='.$idLog)->all();
+     $prodiId;
+     foreach ($prod as $key) {
+          $prodiId= $key['ref_kbk_id'];
+     }
+     $kelas=Kelas::find()->where('prodi_id='.$prodiId)->all();
+     
      $prodi="";
      $i=1;
         if(true){
-            while($i!=9){
+            foreach ($kelas as $key ) {
                 // echo $i ;
                 ?>
                 <div class="container">
                     <div class="col-md-5">
-                        <h3>Semester    <?php echo $i;?></h3>
+                        <h3><?php echo $key['nama'];?></h3>
                     </div>
                     <div class="col-md-3" align="right">
-                        <a href="<?=Url::toRoute(['/rppx/penugasan-pengajaran/create','semester'=>$i,'kelas'=>$_GET['kelas']]) ?>" class="btn btn-primary">Edit</a>
+                        <a href="<?=Url::toRoute(['/rppx/penugasan-pengajaran/menu','kelas'=>$key['nama']]) ?>" class="btn btn-primary">Edit</a>
                         
                     </div>
                 </div>

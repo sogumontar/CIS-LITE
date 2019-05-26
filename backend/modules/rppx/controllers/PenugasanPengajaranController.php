@@ -73,11 +73,14 @@ class PenugasanPengajaranController extends Controller
     public function actionMenu(){
         return $this->render('menu');
     }
+    public function actionKelas(){
+        return $this->render('kelas');
+    }
     public function actionMenuasdos(){
         return $this->render('menuAsdos');
     }
     public function actionIndexasdos(){
-           $searchModel = new PenugasanPengajaranSearch();
+        $searchModel = new PenugasanPengajaranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('indesAsdos', [
@@ -93,18 +96,20 @@ class PenugasanPengajaranController extends Controller
         $baris=0;
         $colom=0;
         
-           if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             // var_dump($model->load);
             // var_dump($model->load);
             // die();
-            if($model->role_pengajar_id==""){
-                $model->role_pengajar_id=0;
+
+            if($model->asdos2==""){
+                $model->asdos2=0;
             }
-            if($model->role_pengajar_id3==""){
-                $model->role_pengajar_id3=0;
+            if($model->asdos3==""){
+                $model->asdos3=0;
             }
              Yii::$app->db->createCommand('update krkm_kuliah set stat_created=1 where kuliah_id='.$model->pengajaran_id)->execute();
+             
             $model->save(false);
 
             return $this->render('createAsdos', [
@@ -126,6 +131,7 @@ class PenugasanPengajaranController extends Controller
                 'modelPengajaran' => $modelPengajaran,
                 'semester'=> $semester,
             ]);
+
         }
 
     }

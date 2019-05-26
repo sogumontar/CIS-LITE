@@ -80,11 +80,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                               <td></td>
                             <td id="loaddosen1" style="min-width: 62px;"></td>
 
-                        </div>
-                        <td id="asdos1" style="min-width: 150px;"></td>
-                        <td></td>
-                        <td id="loadasdos1" style="min-width: 62px;"></td>
-                    </tr>
+                      
                 </thead>
                 <tbody>
                   

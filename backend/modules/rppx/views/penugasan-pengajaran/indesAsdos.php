@@ -92,7 +92,7 @@ $this->params['layout'] = 'full';
                      <?php } } ?>
                      <td><p><?php echo $key['load3']; ?></p></td>
                      <td><p><?php echo $key['created_at']; ?></p></td>
-                     <td><a class="fa fa-check" href="<?=Url::toRoute(['update','id'=>$key['penugasan_pengajaran_id']]) ?>" ></a></td>
+                     <td><a class="fa fa-book" href="<?=Url::toRoute(['update','id'=>$key['penugasan_pengajaran_id']]) ?>" ></a></td>
                      <td><a onclick="return confirm('Anda Yakin Ingin Menghapus Request?');" href="<?=Url::toRoute(['insret','id'=>$key['penugasan_pengajaran_id']]) ?>"  class="fa fa-close"></a></td>
                      <?php 
 

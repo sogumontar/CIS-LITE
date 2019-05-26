@@ -23,7 +23,6 @@ use common\behaviors\DeleteBehavior;
  * @property integer $asdos3
  * @property double $load3
  * @property integer $approved
- * @property integer $request_by
  * @property integer $deleted
  * @property string $deleted_by
  * @property string $deleted_at
@@ -35,7 +34,6 @@ use common\behaviors\DeleteBehavior;
  * @property HrdxStaf $asdos10
  * @property HrdxStaf $asdos20
  * @property HrdxStaf $asdos30
- * @property HrdxPegawai $requestBy
  */
 class PenugasanPengajaranAsdos extends \yii\db\ActiveRecord
 {
@@ -71,14 +69,15 @@ class PenugasanPengajaranAsdos extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-       return [
-            [['pengajaran_id', 'asdos1', 'asdos2','asdos3','jumlah_kelas_riil','kelas_tatap_muka','load1','load2','load3', 'deleted'], 'integer'],
-            [['asdos1'], 'required'],
+        return [
+            [['pengajaran_id', 'kelas', 'jumlah_kelas_riil', 'kelas_tatap_muka', 'asdos1', 'asdos2', 'asdos3', 'approved', 'deleted', 'updated_by'], 'integer'],
+            [['load1', 'load2', 'load3'], 'number'],
             [['deleted_at', 'created_at', 'updated_at'], 'safe'],
-            [['deleted_by', 'created_by', 'updated_by'], 'string', 'max' => 32],
-            [['pengajaran_id'], 'exist', 'skipOnError' => true, 'targetClass' => AdakPengajaran::className(), 'targetAttribute' => ['pengajaran_id' => 'pengajaran_id']],
-            [['asdos1'], 'exist', 'skipOnError' => true, 'targetClass' => HrdxPegawai::className(), 'targetAttribute' => ['asdos1' => 'asdos1']],
-            [['asdos2'], 'exist', 'skipOnError' => true, 'targetClass' => RRolePengajar::className(), 'targetAttribute' => ['asdos2' => 'asdos2']]
+            [['deleted_by'], 'string', 'max' => 32],
+            [['pengajaran_id'], 'exist', 'skipOnError' => true, 'targetClass' => Kuliah::className(), 'targetAttribute' => ['pengajaran_id' => 'kuliah_id']],
+            [['asdos1'], 'exist', 'skipOnError' => true, 'targetClass' => Staf::className(), 'targetAttribute' => ['asdos1' => 'pegawai_id']],
+            [['asdos2'], 'exist', 'skipOnError' => true, 'targetClass' => Staf::className(), 'targetAttribute' => ['asdos2' => 'pegawai_id']],
+            [['asdos3'], 'exist', 'skipOnError' => true, 'targetClass' => Staf::className(), 'targetAttribute' => ['asdos3' => 'pegawai_id']]
         ];
     }
 
@@ -100,7 +99,6 @@ class PenugasanPengajaranAsdos extends \yii\db\ActiveRecord
             'asdos3' => 'Asdos3',
             'load3' => 'Load3',
             'approved' => 'Approved',
-            'request_by' => 'Request By',
             'deleted' => 'Deleted',
             'deleted_by' => 'Deleted By',
             'deleted_at' => 'Deleted At',
@@ -123,7 +121,7 @@ class PenugasanPengajaranAsdos extends \yii\db\ActiveRecord
      */
     public function getAsdos10()
     {
-        return $this->hasOne(HrdxStaf::className(), ['staf_id' => 'asdos1']);
+        return $this->hasOne(HrdxStaf::className(), ['pegawai_id' => 'asdos1']);
     }
 
     /**
@@ -131,7 +129,7 @@ class PenugasanPengajaranAsdos extends \yii\db\ActiveRecord
      */
     public function getAsdos20()
     {
-        return $this->hasOne(HrdxStaf::className(), ['staf_id' => 'asdos2']);
+        return $this->hasOne(HrdxStaf::className(), ['pegawai_id' => 'asdos2']);
     }
 
     /**
@@ -139,14 +137,6 @@ class PenugasanPengajaranAsdos extends \yii\db\ActiveRecord
      */
     public function getAsdos30()
     {
-        return $this->hasOne(HrdxStaf::className(), ['staf_id' => 'asdos3']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRequestBy()
-    {
-        return $this->hasOne(HrdxPegawai::className(), ['pegawai_id' => 'request_by']);
+        return $this->hasOne(HrdxStaf::className(), ['pegawai_id' => 'asdos3']);
     }
 }

@@ -27,7 +27,7 @@ $this->params['layout'] = 'full';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Penugasan Pengajaran', ['menu'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Penugasan Pengajaran', ['kelas'], ['class' => 'btn btn-success']) ?>
     </p>
      <p  align="right">Convert Data ke<a href="penugasan-pengajaran/convert"> Excel</a></p>
      <a href="indexasdos" class="fa fa-female"><button class="btn btn-primary">Assisten Dosen</button></a>
@@ -56,10 +56,12 @@ $this->params['layout'] = 'full';
                      ?>
                      <tr>
                         <td><p><?php echo $ket['nama_kul_ind']; ?></p></td>
+                    
                      <?php    
 
                         
                     }
+
                     foreach ($var as $ket) {
                      ?>
                     <td><p><?php echo $ket['nama']; ?></p></td>
@@ -78,12 +80,15 @@ $this->params['layout'] = 'full';
                      <?php } ?>
                      <td><p><?php echo $key['load3']; ?></p></td>
                      <td><p><?php echo $key['created_at']; ?></p></td>
-                     <td><a class="fa fa-check" href="<?=Url::toRoute(['update','id'=>$key['penugasan_pengajaran_id']]) ?>" ></a></td>
-                     <td><a onclick="return confirm('Anda Yakin Ingin Menghapus Request?');" href="<?=Url::toRoute(['insret','id'=>$key['penugasan_pengajaran_id']]) ?>"  class="fa fa-close"></a></td>
+                     <td><a class="fa fa-book" href="<?=Url::toRoute(['update','id'=>$key['penugasan_pengajaran_id']]) ?>" ></a></td>
+                     <td><a onclick="return confirm('Anda Yakin Ingin Menghapus Request?');" href="<?=Url::toRoute(['insret','id'=>$key['penugasan_pengajaran_id']]) ?>"  class="fa fa-close"></a>
+                     </td>
+                 </tr>
                      <?php 
 
                 }
              ?>
+             <hr>
     </table>
 
 <div>

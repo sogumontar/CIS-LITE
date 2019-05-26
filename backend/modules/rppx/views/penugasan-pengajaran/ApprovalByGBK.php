@@ -24,16 +24,16 @@
         <div class="col-md-9">
             <table >
                 <tr>
-                    <td width="150px" align="center">Nama Mata Kuliah  <br><br>  </td>
-                    <td width="150px" align="center">Jumlah Kelas Riil <br><br></td>
-                    <td width="150px" align="center">Jumlah Tatap Muka <br><br></td>
-                    <td width="150px" align="center">Dosen 1 <br><br></td>
-                    <td width="150px" align="center">Load <br><br></td>
-                    <td width="150px" align="center">Dosen 2 <br><br></td>
-                    <td width="150px" align="center">Load <br><br></td>
-                    <td width="150px" align="center">Dosen 3 <br><br></td>
-                    <td width="150px" align="center">Load <br><br></td>
-                    <td width="150px" align="center">Request Oleh <br><br></td>
+                    <td width="150px" align="center"><b>Nama Mata Kuliah </b> <br><br>  </td>
+                    <td width="150px" align="center"><b>Jumlah Kelas Riil <br><br></td>
+                    <td width="150px" align="center"><b>Jumlah Tatap Muka <br><br></td>
+                    <td width="150px" align="center"><b>Dosen 1 <br><br></td>
+                    <td width="150px" align="center"><b>Load <br><br></td>
+                    <td width="150px" align="center"><b>Dosen 2 <br><br></td>
+                    <td width="150px" align="center"><b>Load <br><br></td>
+                    <td width="150px" align="center"><b>Dosen 3 <br><br></td>
+                    <td width="150px" align="center"><b>Load <br><br></td>
+                    <td width="150px" align="center"><b>Request Oleh <br><br></td>
                 </tr>
                 <br> <br>
                 <?php

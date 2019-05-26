@@ -66,8 +66,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                         <td id="jumlahsks" > Jumlah SKS </td>
                         <td id="jumlahsks" style="min-width: 150px;"> Jumlah Tatap Muka </td>
                         <td id="jumlahsks" style="min-width: 150px;"> Jumlah Kelas Riil </td>
-                        <div id="headdosens">
-
+                        </tr>
                             <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Dosen </td>
                             <td colspan="2" style="min-width: 150px;"> %Dosen 1</td>
                             <td style="min-width: 150px;">%Dosen 2</td>
