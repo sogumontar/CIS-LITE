@@ -1,7 +1,7 @@
 <?php
 
-    use yii\helpers\Url;
-    use backend\modules\rppx\models\AdakPengajaran;
+use yii\helpers\Url;
+use backend\modules\rppx\models\AdakPengajaran;
 use yii\helpers\Html;
 use yii\db\Query;
 
@@ -23,6 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
     	'model' => $model,
     	// 'baris'=>$baris,
     	// 'colom'=>$colom,
+        'namakuliah'=>$namakuliah,
+        'skstot'=>$skstot,
+        'kuliah'=>$kuliah,
     	'modelPengajaran' => $modelPengajaran,
     	'semester'=> $semester,
     ]) ?>

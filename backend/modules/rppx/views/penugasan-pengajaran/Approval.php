@@ -24,16 +24,16 @@
                 <div class="col-md-9">
                     <table >
                         <tr>
-                            <td width="150px" align="center">Nama Mata Kuliah  <br><br>  </td>
-                            <td width="150px" align="center">Jumlah Kelas Riil <br><br></td>
-                            <td width="150px" align="center">Jumlah Tatap Muka <br><br></td>
-                            <td width="150px" align="center">Dosen 1 <br><br></td>
-                            <td width="150px" align="center">Load <br><br></td>
-                            <td width="150px" align="center">Dosen 2 <br><br></td>
-                            <td width="150px" align="center">Load <br><br></td>
-                            <td width="150px" align="center">Dosen 3 <br><br></td>
-                            <td width="150px" align="center">Load <br><br></td>
-                            <td width="150px" align="center">Request Oleh <br><br></td>
+                            <td width="150px" align="center"><b>Nama Mata Kuliah  <br><br>  </td>
+                            <td width="150px" align="center"><b>Jumlah Kelas Riil <br><br></td>
+                            <td width="150px" align="center"><b>Jumlah Tatap Muka <br><br></td>
+                            <td width="150px" align="center"><b>Dosen 1 <br><br></td>
+                            <td width="150px" align="center"><b>Load <br><br></td>
+                            <td width="150px" align="center"><b>Dosen 2 <br><br></td>
+                            <td width="150px" align="center"><b>Load <br><br></td>
+                            <td width="150px" align="center"><b>Dosen 3 <br><br></td>
+                            <td width="150px" align="center"><b>Load <br><br></td>
+                            <td width="150px" align="center"><b>Request Oleh <br><br></td>
                         </tr>
                         <br> <br>
                         <?php
@@ -48,9 +48,9 @@
                                     
                                 
                             ?>
-                            <td width="150px"  align="center"><?php echo $key['nama_kul_ind']; ?></td>
+                            <td width="150px" class="form-control"  align="center"><?php echo $key['nama_kul_ind']; ?></td>
                             <?php }?>
-                            <td width="150px" align="center"><?php echo $test['jumlah_kelas_riil']; ?></td>
+                            <td width="150px"  align="center"><?php echo $test['jumlah_kelas_riil']; ?></td>
                             <td width="150px" align="center"><?php echo $test['kelas_tatap_muka']; ?></td>
                             <?php 
                                 $pengajar=HrdxPegawai::find()->where('pegawai_id='.$test['pegawai_id'])->all();

@@ -63,56 +63,6 @@ $this->beginPage();
                     <span class="icon-bar"></span>
                     </a>
                     <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
-                         <?php
-                            $userModel = null;
-                            $profileName = "Guest";
-                            if (!\Yii::$app->user->isGuest) {
-                                $userModel = \Yii::$app->user->getIdentity();
-                                $profileName = $userModel->username;
-                            }
-                        ?> 
-
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span>
-                                <?=$profileName ?>
-                                <i class="caret"></i></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <!-- User image -->
-                                <li class="user-header">
-                                    <?php if (!\Yii::$app->user->isGuest): ?>
-                                            <img src="<?php echo $v2Asset->baseUrl ?>/img/avatar3.png" class="img-circle" alt="User Image" />
-                                        
-                                        <p>
-                                            <?php 
-                                            echo $userModel->username;
-                                             ?>
-                                            <small>
-                                            <?php 
-                                               $wgs = ['test1', 'test2']; 
-                                             ?>
-                                             Workgroups: 
-                                             <?php foreach ($wgs as $wg): ?>
-                                                 <span class='label label-warning'><?=$wg ?></span>
-                                             <?php endforeach ?>
-                                            </small>
-                                        </p>
-                                    <?php endif ?>
-                                </li>
-                                <li class="user-footer">
-                                    <div class="pull-right">
-                                        <a href=<?= Url::toRoute('/user/logout')?> class="btn btn-default btn-flat">Sign out</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- Control Sidebar Toggle Button -->
-                        <li>
-                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                        </li>
-                    </ul>
                     </div>
                 </nav>
             </header>

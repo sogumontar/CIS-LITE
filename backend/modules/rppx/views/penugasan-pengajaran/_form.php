@@ -1,5 +1,5 @@
 <?php
-
+    $global=100;
     use yii\helpers\Html;
     use yii\helpers\ArrayHelper;
 
@@ -7,25 +7,33 @@
     use backend\modules\rppx\models\HrdxPegawai;
     use backend\modules\rppx\models\Staf;
 
-$ind = 0;
-$que = HrdxPegawai::find()->all();
+    $ind = 0;
+    $que = HrdxPegawai::find()->all();
 
-use backend\modules\rppx\models\PenugasanPengajaran;
-use backend\modules\rppx\models\AdakPengajaran;
-use yii\widgets\ActiveForm;
+    use backend\modules\rppx\models\PenugasanPengajaran;
+    use backend\modules\rppx\models\AdakPengajaran;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model backend\modules\rppx\models\PenugasanPengajaran */
-/* @var $form yii\widgets\ActiveForm */
-$view = ArrayHelper::map(Kuliah::find()->all(), 'kode_mk', 'nama_kul_ind');
-$vieww = ArrayHelper::map(AdakPengajaran::find()->all(), 'pengajaran_id', 'kuliah_id');
-$viewPengajar = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
-$viewPengajar2 = ArrayHelper::map(Kuliah::find()->where('stat_created=0')->all(), 'kuliah_id', 'nama_kul_ind');
-$viewPengajarr = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
-$viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
-
+    /* @var $this yii\web\View */
+    /* @var $model backend\modules\rppx\models\PenugasanPengajaran */
+    /* @var $form yii\widgets\ActiveForm */
+    $view = ArrayHelper::map(Kuliah::find()->all(), 'kode_mk', 'nama_kul_ind');
+    $vieww = ArrayHelper::map(AdakPengajaran::find()->all(), 'pengajaran_id', 'kuliah_id');
+    $viewPengajar = ArrayHelper::map(HrdxPegawai::find()->where('pegawai_id!=0')->all(), 'pegawai_id', 'nama');
+    $viewPengajar2 = ArrayHelper::map(Kuliah::find()->where('stat_created=0')->all(), 'kuliah_id', 'nama_kul_ind');
+    $viewPengajarr = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
+    $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
 
 ?>
+<script type="text/javascript">
+
+    function getLast(val){
+        // document.write(val);
+        document.getElementById('binatang').value=2;
+        var year=today.getFullYear();
+      
+    }
+</script>
 <style type="text/css">
     .scroll {
         width: 540px;
@@ -46,14 +54,101 @@ $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
 </style>
  
 <?php
+// echo $namakuliah;
 $staf=Staf::find()->select('pegawai_id')->asArray()->all();
 $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all(), 'pegawai_id', 'nama');
+$dosen1="";$load1=0;$jlhttp=0;
+$dosen2="-";$load2="-";$jslkelas=0;
+$dosen3="-";$load3="-";
+$hasil=PenugasanPengajaran::find()->where('pengajaran_id='.$kuliah)->all();
+if($hasil){
+    foreach ($hasil as $key ) {
+
+        if(substr($key['created_at'],0,4)<=date('Y')){
+
+            $ss=HrdxPegawai::find()->where('pegawai_id='.$key['pegawai_id'])->all();
+            foreach ($ss as $keyy) {
+                $dosen1=$keyy['nama'];
+            }
+            $loald1=$key['load'];
+            $dosen2=$key['role_pengajar_id'];
+            if($dosen2==0){
+                $dosen2="-";
+            }else{
+                $ss=HrdxPegawai::find()->where('pegawai_id='.$key['role_pengajar_id'])->all();
+                foreach ($ss as $keyy) {
+                $dosen2=$keyy['nama'];
+                }
+            }
+            $loald2=$key['load2'];
+            $dosen3=$key['role_pengajar_id3'];
+            if($dosen3==0){
+                $dosen3="-";
+            }else{
+                $ss=HrdxPegawai::find()->where('pegawai_id='.$key['role_pengajar_id3'])->all();
+                foreach ($ss as $keyy) {
+                    $dosen3=$keyy['nama'];
+                }
+            }
+            $loald3=$key['load3'];
+        }
+    }
+}
 ?>
 <?php $form = ActiveForm::begin();
                     $jj = 0;
                     $ronaldo=0;;
                     $jlhsks=array();
                     ?>
+<?php if($dosen1!=""){?>
+    <div class="tree table">
+        <div class="form-groups" style="background-color:#668fd6 ; ">
+                <hr>
+                <h2 >Dosen Pengampu Tahun Ajaran Sebelumnya </h2>
+                <hr>
+        </div>
+        <div>
+            <table class="table" border="2">
+                <th>Judul</th>
+                <th>Value</th>
+                <tr>
+                    <th>Jumlah Tatap Muka</th>
+                    <th><?php echo $jlhttp; ?></th>
+                </tr>
+                <tr>
+                    <th>Kelas Riil</th>
+                    <th><?php echo $jslkelas; ?></th>
+                </tr>
+                <tr>
+                    <th>Nama Dosen 1</th>
+                    <th><?php echo $dosen1; ?></th>
+                </tr>
+                <tr>
+                    <th>Load</th>
+                    <th><?php echo $load1; ?></th>
+                </tr>
+                  <tr>
+                    <th>Nama Dosen 2</th>
+                    <th><?php echo $dosen2; ?></th>
+                </tr>
+                <tr>
+                    <th>Load</th>
+                    <th><?php echo $load2; ?></th>
+                </tr>
+                  <tr>
+                    <th>Nama Dosen 3</th>
+                    <th><?php echo $dosen3; ?></th>
+                </tr>
+                <tr>
+                    <th>Load3</th>
+                    <th><?php echo $load3; ?></th>
+                </tr>
+           
+            </table>
+        </div>
+    </div>
+<?php 
+}?>
 <div class="col-md-8">
     <h2>Penugasan Dosen</h2>
     <div class="scroll">
@@ -62,20 +157,13 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
             <table class="tree table">
                 <thead>
                     <tr>
-                        <td id="matakuliah" style="min-width: 150px;"> Mata Kuliah </td>
-                        <td id="jumlahsks" > Jumlah SKS </td>
-                        <td id="jumlahsks" style="min-width: 150px;"> Jumlah Tatap Muka </td>
-                        <td id="jumlahsks" style="min-width: 150px;"> Jumlah Kelas Riil </td>
-                        </tr>
-                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Dosen </td>
-                            <td colspan="2" style="min-width: 150px;"> %Dosen 1</td>
-                            <td style="min-width: 150px;">%Dosen 2</td>
-                             <td colspan="2" style="min-width: 150px;">%Dosen 3</td>
-                             <td></td>
-                              <td colspan="2"> </td>
-                              <td></td>
-                            <td id="loaddosen1" style="min-width: 62px;"></td>
-
+                        <td id="matakuliah" align="center" style="min-width: 150px;"> Mata Kuliah </td>
+                        <td id="jumlahsks"  align="center" > Jumlah SKS </td>
+                        <td id="jumlahsks" align="center" style="min-width: 150px;"> Jumlah Tatap Muka </td>
+                        <td></td>
+                        <td colspan="2"> </td>
+                        <td></td>
+                        <td id="loaddosen1" style="min-width: 62px;"></td>
                         </div>
                         <td id="asdos1" style="min-width: 150px;"></td>
                         <td></td>
@@ -85,15 +173,26 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                 <tbody>
                   
                         <tr id="tambahRow" class="bodydosen">
-                           <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'pengajaran_id')->dropDownList($viewPengajar2, ['prompt' => '--Mata Kuliah--','onChange'=>'js:so(value);'])->label('') ?>
-                           
+                           <td style="padding-top: 0px; margin-top: 100px;" id="test">
+                            <br>
+                               <?=$form->field($model , 'pengajaran_id')->textInput([
+                                 'type' => 'text',
+                                 'value'=> $namakuliah,
+                                 'align'=>'center',
+                                 'disabled'=>'true',
+                                 'onchange'=>'tatapM(value)'
+                            ])->label(false)?>
                             <td style="max-width: 150px;padding-top: 25px;">
-                              <input type="text" id="jumlahs" name="" disabled="">
+                                <h3 style="margin-top: 0px;" align="center" id="jumlahs"> <?php echo $skstot; ?></h3>
+                              <!-- <input type="text" id="jumlahs" name="" value="<?php echo $skstot; ?>" disabled=""> -->
                               
                                 <script type="text/javascript">
                                     function so(value){
-                                        
+
+                                        <?php 
+                                            PenugasanPengajaran::find();
+                                        ?>
+                                        document.getElementById('binatang').value=2;
                                         document.getElementById('jumlahs').value=value;
                                     }
                                 </script>
@@ -109,7 +208,12 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             </td>
                         </tr>
                         <tr>
-                            <td  style="max-width: 130px;padding-top: 20px;">
+                        <td id="jumlahsks" style="min-width: 150px;" align="center"> Jumlah Kelas Riil </td>
+                        <td id="dosen<?= $jlhDosen ?>" align="center" style="min-width: 150px;" > Dosen 1 </td>
+                        <td colspan="2" style="min-width: 150px;" align="center"> Load</td>
+                    </tr>
+                    <tr>
+                        <td  style="max-width: 130px;padding-top: 20px;">
                                 <?=$form->field($model, 'jumlah_kelas_riil')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
@@ -117,52 +221,68 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                  'onchange'=>'rils(value)'
                             ])->label(false)?>
 
-                            </td>
-                            <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                            </td>
-                            <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                        </td>
+                        <td style="padding-top: 0px;" id="test">
+                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dosa(this);','id'=>'binatang'])->label('') ?>
+                        </td>
+                        <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
+                                 'max'=>$global-1,
                                  'onchange'=>'input2(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
-                            </td>
-                              <td style="padding-top: 0px;" id="test">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;" align="center" > Dosen 2 </td>
+                        <td colspan="2" style="min-width: 150px;" > Load</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'role_pengajar_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                            </td>
+                        </td>
 
-                              <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                        <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load2')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
                                  'onchange'=>'input2(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
-                            </td>
-                              <td style="padding-top: 0px;" id="test">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;" align="center"> Dosen 3 </td>
+                        <td colspan="2" style="min-width: 150px;" al> Load</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'role_pengajar_id3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                            </td>
-                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                        </td>
+                        <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load3')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
                                  'onchange'=>'input2(value)'
                             ])->label(false)?>
-                            </td>
-                            <td>
-                                <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                               <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>  
-                            </td>
-                        </tr>
-                    </tbody>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
+
 </div><!-- 
-    <div class="col-md-4"> -->
+    <div colspans="col-md-4"> -->
+        <br><br><br>
         <div class="scroll2">
             <table>
                 <tr>
@@ -185,7 +305,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     }
                                 // print_r($load);
                     $indikatorr=0;
-                    $ii=PenugasanPengajaran::find()->where('')->all();
+                    $ii=PenugasanPengajaran::find()->all();
                     $penanda2=0;
                     $ppp=array();
                     foreach ($ii as $key ) {
@@ -195,16 +315,18 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     }
                     $ttg=1;
                     foreach ($que as $q) {
-
-                        $jlhL=PenugasanPengajaran::find()->where('pegawai_id='.$q['pegawai_id'])->all();
-                        foreach ($jlhL as $key ) {
-                            // echo $key['load'];
-                        }
+                        $penugasan = PenugasanPengajaran::find()->where('pegawai_id = '.$q['pegawai_id'])->all();
+                        $load=0;
+                        foreach($penugasan as $penpe){ $load=$load+$penpe['load'];}
                         ?>
 
                         <tr bgcolor="">
-                            <td><input type="text" value="<?= $q['nama'] ?>" disabled="" name="<?= $q['pegawai_id'] ?>"></td>
-                            <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="<?php echo "5"; ?>" disabled="" name=""></td>
+                            <td>
+                                <?php if($q['nama']!='-') {?>
+                                <input type="text" value="<?= $q['nama'] ?>" disabled="" name="<?= $q['pegawai_id'] ?>"></td>
+
+                            <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="<?= $load ?>" disabled="" name=""></td>
+                            <?php } ?>
                         </tr>
                         <?php $indikator++;
                         if($q['pegawai_id'] == $ppp[$penanda2-1]){
@@ -219,11 +341,23 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                     <?php   }
                         }
                     }?>
-                       
-                       
+                        
             </table>
         </div>
     </div>
+    <script type="text/javascript">
+        function Dosa(baris){
+            <?php
+             ?>
+            if(<?php echo $load1; ?>===0){
+                 var ss=baris.options[baris.selectedIndex].value;
+                // alert('baris');
+            }else{
+                // alert('del');
+            }
+            Dos(baris);
+        }
+    </script>
    
 
                 <?php

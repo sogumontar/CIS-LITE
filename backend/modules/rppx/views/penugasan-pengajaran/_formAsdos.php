@@ -154,7 +154,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
             <table>
                 <tr>
                     <td>
-                        <label>Nama </label>
+                        <label>Nama Asdos</label>
                     </td>
 
                     <td>

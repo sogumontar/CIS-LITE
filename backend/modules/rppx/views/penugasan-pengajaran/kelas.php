@@ -22,13 +22,12 @@ $this->params['layout'] = 'full';
     ?>
     <?php
     $idLog=1;
-     $prod=Prodi::find()->where('kepala_id='.$idLog)->all();
-     $prodiId;
-     foreach ($prod as $key) {
-          $prodiId= $key['ref_kbk_id'];
-     }
-     $kelas=Kelas::find()->where('prodi_id='.$prodiId)->all();
-     
+     // $prod=Prodi::find()->where('kepala_id='.$idLog)->all();
+     // $prodiId;
+     // foreach ($prod as $key) {
+     //      $prodiId= $key['ref_kbk_id'];
+     // }
+     $kelas=Kelas::find()->where('kaprodi_id='.$idLog)->orderBy('nama')->all();
      $prodi="";
      $i=1;
         if(true){

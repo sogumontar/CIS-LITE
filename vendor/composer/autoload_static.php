@@ -56,6 +56,10 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
             'Symfony\\Component\\DomCrawler\\' => 29,
             'Symfony\\Component\\CssSelector\\' => 30,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'F' => 
         array (
             'Faker\\' => 6,
@@ -162,6 +166,10 @@ class ComposerStaticInit48d56ef26ed72873f6306a7a65fb24d1
         'Symfony\\Component\\CssSelector\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/css-selector',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Faker\\' => 
         array (

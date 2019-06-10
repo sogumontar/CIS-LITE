@@ -29,7 +29,8 @@
         "philippfrenzel/yii2fullcalendar":"*",
         "yiisoft/yii2-httpclient": "*",
         "wbraganca/yii2-dynamicform": "*",
-        "kartik-v/yii2-dialog": "*"
+        "kartik-v/yii2-dialog": "*",
+        "phpmailer/phpmailer": "^6.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

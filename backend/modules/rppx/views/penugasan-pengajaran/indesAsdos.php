@@ -31,7 +31,7 @@ $this->params['layout'] = 'full';
         <?= Html::a('New', ['menuasdos'], ['class' => 'btn btn-success']) ?>
     </p>
      <p  align="right">Convert Data ke<a href="penugasan-pengajaran/convert"> Excel</a></p>
-     <a href="index" class="fa fa-female"><button class="btn btn-primary"> Dosen</button></a>
+     <a href="index" ><button class="btn btn-primary"> Dosen</button></a>
     <table>
         <b><hr></b>
         <tr >

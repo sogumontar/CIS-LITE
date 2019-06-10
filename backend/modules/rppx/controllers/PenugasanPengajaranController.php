@@ -16,7 +16,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\modules\rppx\models\Staf;
 use backend\modules\rppx\models\HrdxPegawai;
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 /**
  * PenugasanPengajaranController implements the CRUD actions for PenugasanPengajaran model.
  */
@@ -72,6 +73,9 @@ class PenugasanPengajaranController extends Controller
 
     public function actionMenu(){
         return $this->render('menu');
+    }
+    public function actionBaak(){
+        return $this->render('baak');
     }
     public function actionKelas(){
         return $this->render('kelas');
@@ -144,6 +148,14 @@ class PenugasanPengajaranController extends Controller
         $jlhAsdos = 1;
         $baris=0;
         $colom=0;
+        $kuliah=$_GET['kuliah'];
+        $namekul=Kuliah::find()->where('kuliah_id='.$kuliah)->all();
+        $namakuliah;
+        $skstot;
+        foreach ($namekul as $key ) {
+            $namakuliah=$key['nama_kul_ind'];
+            $skstot=$key['sks'];
+        }
         if ($model->load(Yii::$app->request->post())) {
             if($model->role_pengajar_id==""){
                 $model->role_pengajar_id=0;
@@ -151,6 +163,10 @@ class PenugasanPengajaranController extends Controller
             if($model->role_pengajar_id3==""){
                 $model->role_pengajar_id3=0;
             }
+            
+            $model->load=(($skstot+$model->kelas_tatap_muka + $skstot*$model->jumlah_kelas_riil)/$skstot)*($model->load/100);
+            
+            $model->pengajaran_id=$_GET['kuliah'];
              Yii::$app->db->createCommand('update krkm_kuliah set stat_created=1 where kuliah_id='.$model->pengajaran_id)->execute();
             $model->save(false);
              return $this->render('create', [
@@ -158,6 +174,9 @@ class PenugasanPengajaranController extends Controller
                 'jlhDosen'=>$jlhDosen,
                 'jlhAsdos'=>$jlhAsdos,
                 'baris'=>$baris,
+                'kuliah'=>$kuliah,
+                'namakuliah'=>$namakuliah,
+                'skstot'=>$skstot,
                 'colom'=>$colom,
                 'modelPengajaran' => $modelPengajaran,
                 'semester'=> $semester,
@@ -168,6 +187,9 @@ class PenugasanPengajaranController extends Controller
                 'jlhDosen'=>$jlhDosen,
                 'jlhAsdos'=>$jlhAsdos,
                 'baris'=>$baris,
+                'kuliah'=>$kuliah,
+                'namakuliah'=>$namakuliah,
+                'skstot'=>$skstot,
                 'colom'=>$colom,
                 'modelPengajaran' => $modelPengajaran,
                 'semester'=> $semester,
@@ -310,8 +332,8 @@ class PenugasanPengajaranController extends Controller
         $data=PenugasanPengajaran::find()->all();
 
 
-        // header("Content-type: application/vnd-ms-excel");
-        // header("Content-Disposition: fdf_get_attachment(fdf_document, fieldname, savepath)nt; filename=Data Pegawai.xls");
+        header("Content-type: application/vnd-ms-excel");
+        header("Content-Disposition: fdf_get_attachment(fdf_document, fieldname, savepath)nt; filename=Data Pegawai.xls");
         echo "<h1></h1>";
         echo '<table border="1">
         <tr ><td colspan="9"><center><h1>Penugasan Pengajaran</h1></center></td></tr>
@@ -381,7 +403,7 @@ class PenugasanPengajaranController extends Controller
             echo $dd['kelas_tatap_muka']; 
             echo '</td><td>';
                 foreach($pId as $p){
-                        echo $p['nama'];
+                    echo $p['nama'];
                 }
             
             echo '</td></tr>';
@@ -415,7 +437,51 @@ class PenugasanPengajaranController extends Controller
     //Reject request Penugasan Pengajaran Oleh Kepala GBK
     //$idAkun=id request yanng telah di parsing
     public function actionGbkreject($idAkun){
+
      Yii::$app->db->createCommand('update rppx_penugasan_pengajaran set gbk_approved=2 where penugasan_pengajaran_id='.$idAkun)->execute();
+
+// Instantiation and passing `true` enables exceptions
+// $mail = new PHPMailer(true);
+
+// try {
+//     //Server settings
+//     $mail->SMTPDebug = 2;                                       // Enable verbose debug output
+//     $mail->isSMTP();                                            // Set mailer to use SMTP
+//     $mail->Host       = 'smtp1.example.com;smtp2.example.com';  // Specify main and backup SMTP servers
+//     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+//     $mail->Username   = 'hendrasimz92@gmail.com';                     // SMTP username
+//     $mail->Password   = 'simangunsong77';                               // SMTP password
+//     $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+//     $mail->Port       = 587;                                    // TCP port to connect to
+
+//     //Recipients
+//     $mail->setFrom('hendrasimz92@gmail.com', 'Mailer');
+//     $mail->addAddress('hendrasimz92@gmail.net', 'Joe User');     // Add a recipient
+//     $mail->addAddress('hendrasimz92@gmail.com');               // Name is optional
+//     $mail->addReplyTo('hendrasimz92@gmail.com', 'Information');
+//     $mail->addCC('hendrasimz92@gmail.com');
+//     $mail->addBCC('hendrasimz92@gmail.com');
+
+//     // Attachments    // Optional name
+
+//     // Content
+//     $mail->isHTML(true);                                  // Set email format to HTML
+//     $mail->Subject = 'Rencana Penugasan Pengajaran';
+//     $mail->Body    = '<b>in bold!</b>';
+//     $mail->AltBody = 'Your request is rejected';
+
+//     $mail->send();
+//     echo 'Message has been sent';
+// } catch (Exception $e) {
+//     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+// }
+
         return $this->render('ApprovalByGBK');
+
+
+
+    }
+    public function actionSems(){
+        return $this->render('SemesterPendek');
     }
 }
