@@ -8,15 +8,22 @@ $this->title = 'Kelas';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['layout'] = 'full';
 ?>
+
 <div class="penugasan-pengajarann-menu">
     <?php 
     $d=date("D , d  M  Y");
         // $date=date("D/M/Y");
     ?>
-    <p><?php echo $d."<br><br><br><br>"; 
+    <p><?php echo $d."<br><br>"; 
 
     $prod;
-    ?></p>
+    ?>
+        
+    </p>
+
+    <h1>Kelas</h1>
+    <hr>    
+    <br>    <br>    
     <?php 
 
     ?>

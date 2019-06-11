@@ -13,6 +13,7 @@ $this->title = 'Create Penugasan Pengajaran';
 $this->params['breadcrumbs'][] = ['label' => 'Penugasan Pengajaran', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -30,6 +31,4 @@ $this->params['breadcrumbs'][] = $this->title;
     	'semester'=> $semester,
     ]) ?>
     <br>
-    <a style="margin-left: 745px;" href="<?=Url::toRoute(['/rppx/penugasan-pengajaran/createasdos','semester'=>3]) ?>"><button class="btn btn-primary">Asissten Dosen</button></a>
-
-</div>
+    <!-- <a style="margin-left: 745px;" href="<?=Url::toRoute(['/rppx/penugasan-pengajaran/createasdos','semester'=>3]) ?>"><button class="btn btn-primary">Asissten Dosen</button></a> -->

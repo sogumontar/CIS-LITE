@@ -69,25 +69,14 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                         <!-- <td id="jumlahsks"  > Jumlah SKS </td> -->
                         <td id="jumlahsks" style="min-width: 150px;"> Jumlah Tatap Muka </td>
                         <td id="jumlahsks" style="min-width: 150px;"> Jumlah Kelas Riil </td>
-                        <div id="headdosens">
-
-                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Assisten Dosen </td>
-                            <td colspan="2" style="min-width: 150px;"> %Assisten Dosen 1</td>
-                            <td style="min-width: 150px;">%Assisten Dosen 2</td>
-                             <td colspan="2" style="min-width: 150px;">%Asissten Dosen 3</td>
-                             <td></td>
-                              <td colspan="2"> </td>
-                              <td></td>
-                            <td id="loaddosen1" style="min-width: 62px;"></td>
-
-                      
+                    </tr>
                 </thead>
                 <tbody>
                   
                         <tr id="tambahRow" class="bodydosen">
                            <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'pengajaran_id')->dropDownList($viewPengajar2, ['prompt' => '--Mata Kuliah--','onChange'=>'js:Dos(this);'])->label('') ?>
-                           
+                           </td>
                           
                             <td  style="max-width: 130px;padding-top: 20px;">
                                 <?=$form->field($model , 'kelas_tatap_muka')->textInput([
@@ -105,6 +94,12 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                             ])->label(false)?>
 
                             </td>
+                        </tr>
+                        <tr>
+                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Assisten Dosen </td>
+                            <td colspan="2" style="min-width: 150px;"> %Assisten Dosen 1</td>
+                        </tr>
+                        <tr>
                             <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'asdos1')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
                             </td>
@@ -116,9 +111,13 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                  'onchange'=>'input2(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
                             </td>
+                        <tr>
+                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Nama Assisten Dosen 2 </td>
+                            <td style="min-width: 150px;">%Assisten Dosen 2</td>
+                        </tr>
                               <td style="padding-top: 0px;" id="test">
                                 <?= $form->field($model, 'asdos2')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                            </td>
+                              </td>
 
                               <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load2')->textInput([
@@ -127,22 +126,26 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
                                  'min'=>'0',
                                  'onchange'=>'input2(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
-                            </td>
-                              <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'asdos3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                            </td>
-                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
-                               <?=$form->field($model, 'load3')->textInput([
-                                 'type' => 'number',
-                                 'id'=>'riil',
-                                 'min'=>'0',
-                                 'onchange'=>'input2(value)'
-                            ])->label(false)?>
-                            </td>
-                            <td>
-                                <br>
-                              <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>  
-                            </td>
+                                </td>
+                                <tr>
+                                    <td colspan="" style="min-width: 150px;">Nama Asissten Dosen 3</td>
+                                    <td colspan="2" style="min-width: 150px;">%Asissten Dosen 3</td>
+                                </tr>
+                                <td style="padding-top: 0px;" id="test">
+                                    <?= $form->field($model, 'asdos3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
+                                </td>
+                                 <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                                   <?=$form->field($model, 'load3')->textInput([
+                                     'type' => 'number',
+                                     'id'=>'riil',
+                                     'min'=>'0',
+                                     'onchange'=>'input2(value)'
+                                ])->label(false)?>
+                                </td>
+                                <td>
+                                    <br>
+                                  <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>  
+                                </td>
                         </tr>
                     </tbody>
             </table>
@@ -152,6 +155,7 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
     <div class="col-md-4"> -->
         <div class="scroll2">
             <table>
+                <br><br>
                 <tr>
                     <td>
                         <label>Nama Asdos</label>
@@ -328,6 +332,5 @@ $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' =>
     <!-- <button class="btn btn-success">Create</button> -->
    <!--    <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>   -->
      
-</div>
 </form>
 <?php $form = ActiveForm::end(); ?>

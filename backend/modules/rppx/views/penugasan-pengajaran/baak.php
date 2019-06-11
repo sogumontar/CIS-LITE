@@ -13,12 +13,13 @@ $this->params['layout'] = 'full';
 ?>
 <p  align="right">Convert Data ke<a href="convert"> Excel</a></p>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
-    <div style="width: 800px;margin: 0px auto;">
+ <div>
+    </div>
+      <div style="width: 800px;margin: 0px auto;">
         <p></p>
         <canvas id="myChart"></canvas>
     </div>
     <?php 
-        $dosen = Dosen::find()->all();
         $dataBar=HrdxPegawai::find()->all();
     ?>
     <script>
@@ -26,26 +27,18 @@ $this->params['layout'] = 'full';
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [<?php foreach ($dosen as $key) { echo $key['pegawai_id'];?>,<?php }?>],
+                labels: [<?php foreach ($dataBar as $key) { echo $key['pegawai_id'];?>,<?php }?>],
                 datasets: [{
                     label: '',
                     data: [
-                    <?php foreach($dosen as $dat){ ?>
+                    <?php foreach($dataBar as $dat){ ?>
                         <?php 
                         $jumlah_laki = 5;
-                        $query = PenugasanPengajaran::find()->where('pegawai_id = '.$dat['pegawai_id']." || role_pengajar_id = ". $dat['pegawai_id']. " || role_pengajar_id3 = ".$dat['pegawai_id'])->all();
+                        $query = PenugasanPengajaran::find()->where('pegawai_id = '.$dat['pegawai_id'])->all();
                        
                         $sumload = 0;
                         foreach($query as $lo){
-                            if($lo['pegawai_id']==$dat['pegawai_id']){
-                                $sumload = $sumload + $lo['load'];    
-                            }
-                            else if($lo['role_pengajar_id']==$dat['pegawai_id']){
-                                $sumload = $sumload + $lo['load2'];
-                            }
-                            else if($lo['role_pengajar_id3']==$dat['pegawai_id']){
-                                $sumload = $sumload + $lo['load3'];
-                            }
+                            $sumload = $sumload + $lo['load']+$lo['load2']+$lo['load3'];
                         }
 
                         echo $sumload;
@@ -121,7 +114,7 @@ $this->params['layout'] = 'full';
             }
         });
     </script>
-<div class="row">
+    <div class="row">
         <div class="col" style="padding-left: 15px;">
             <center>
             <table border="1" style="margin-top: 50px; width: 700px;">
@@ -129,15 +122,14 @@ $this->params['layout'] = 'full';
                     if($i<12){ ?>
                     <td>
                         <table style="border-right: 1;border-color: #000;margin-left: 30px;">
-                            <?php foreach($dosen as $datas){
-                                $datass = HrdxPegawai::find()->where('pegawai_id = '.$datas['pegawai_id'])->all();
+                            <?php foreach($dataBar as $datas){
                                 $i++;
-                                $pen = PenugasanPengajaran::find()->where('pegawai_id = '.$datas['pegawai_id']." || role_pengajar_id = ". $datas['pegawai_id'] . " || role_pengajar_id3 = ".$datas['pegawai_id'])->all();
+                                $pen = PenugasanPengajaran::find()->where('pegawai_id = '.$datas['pegawai_id'])->all();
                             ?>
                             <tr>
                                 <td></td>
-                                <td><p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;margin-right: 5px;"><?php echo $datas['pegawai_id'];?>: <?php foreach($datass as $datasa){ echo $datasa['nama']; } ?></p></td>
-                                <td>( <?php $sumloads=0 ;foreach($pen as $pen){if($pen['pegawai_id']==$datas['pegawai_id']){$sumloads=$sumloads+$pen['load'];}else if($pen['role_pengajar_id']==$datas['pegawai_id']){$sumloads = $sumloads + $pen['load2'];}else if($pen['role_pengajar_id3']==$datas['pegawai_id']){$sumloads = $sumloads + $pen['load3'];}} echo $sumloads; ?> )</td>
+                                <td><p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;margin-right: 5px;"><?php echo $datas['pegawai_id'];?>: <?= $datas['nama']; ?></p></td>
+                                <td>( <?php $sumloads=0 ;foreach($pen as $pen){$sumloads=$sumloads+$pen['load']+$pen['load2']+$pen['load3'];} echo $sumloads; ?> )</td>
                                 <?php if($i==12){break;} ?>
                             </tr>
                         <?php } ?>
@@ -148,16 +140,15 @@ $this->params['layout'] = 'full';
                  ?>
                  <td>
                      <table style="border-right: 1;border-color: #000;margin-top: 37px;margin-left: 30px;">
-                            <?php foreach($dosen as $datas){
-                                $datass = HrdxPegawai::find()->where('pegawai_id = '.$datas['pegawai_id'])->all();
+                            <?php foreach($dataBar as $datas){
                                 $i++;
                                 if($datas['pegawai_id']>11){
-                                $pen = PenugasanPengajaran::find()->where('pegawai_id = '.$datas['pegawai_id']." || role_pengajar_id = ". $datas['pegawai_id'] . " || role_pengajar_id3 = ".$datas['pegawai_id'])->all();
+                                $pen = PenugasanPengajaran::find()->where('pegawai_id = '.$datas['pegawai_id'])->all();
                             ?>
                             <tr>
                                 <td></td>
-                                <td><p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;margin-right: 5px;"><?php echo $datas['pegawai_id'];?>: <?php foreach($datass as $datasa){ echo $datasa['nama']; } ?></p></td>
-                                <td>( <?php $sumloads=0 ;foreach($pen as $pen){if($pen['pegawai_id']==$datas['pegawai_id']){$sumloads=$sumloads+$pen['load'];}else if($pen['role_pengajar_id']==$datas['pegawai_id']){$sumloads = $sumloads+$pen['load2'];}else if($pen['role_pengajar_id3']==$datas['pegawai_id']){$sumloads = $sumloads+$pen['load3'];}} echo $sumloads; ?> )</td>
+                                <td><p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;margin-right: 5px;"><?php echo $datas['pegawai_id'];?>: <?= $datas['nama']; ?></p></td>
+                                <td>( <?php $sumloads=0 ;foreach($pen as $pen){$sumloads=$sumloads+$pen['load']+$pen['load2']+$pen['load3'];} echo $sumloads; ?> )</td>
                             </tr>
                         <?php }} ?>
             </table>

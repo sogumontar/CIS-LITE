@@ -26,7 +26,7 @@
         }
     }
 
-        $matkul=Kuliah::find()->where( 'kelas_id='.$ket)->all();
+        $matkul=Kuliah::find()->where( "kelas_id='$ket' AND stat_created=0")->all();
 
 ?>
 

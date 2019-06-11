@@ -50,8 +50,8 @@ $this->params['layout'] = 'full';
     <p>
         <?= Html::a('Create Penugasan Pengajaran', ['kelas'], ['class' => 'btn btn-success']) ?>
     </p>
-     <p  align="right">Convert Data ke<a href="penugasan-pengajaran/convert"> Excel</a></p>
-     <a onclick='getLast()'><button class="btn btn-primary">Assisten Dosen</button></a>
+     <p  align="right">Convert Data ke<a href="penugasan-pengajaran/convert" class="btn btn-success"> Excel</a></p>
+     <!-- <a onclick='getLast()'><button class="btn btn-primary">Assisten Dosen</button></a> -->
      <!-- <a href="indexasdos" ><button class="btn btn-primary">Assisten Dosen</button></a> -->
     <table>
         <b><hr></b>

@@ -1,5 +1,5 @@
 <?php
-    $global=100;
+
     use yii\helpers\Html;
     use yii\helpers\ArrayHelper;
 
@@ -7,22 +7,24 @@
     use backend\modules\rppx\models\HrdxPegawai;
     use backend\modules\rppx\models\Staf;
 
-    $ind = 0;
-    $que = HrdxPegawai::find()->all();
+$ind = 0;
+$que = HrdxPegawai::find()->all();
 
-    use backend\modules\rppx\models\PenugasanPengajaran;
-    use backend\modules\rppx\models\AdakPengajaran;
-    use yii\widgets\ActiveForm;
+use backend\modules\rppx\models\PenugasanPengajaran;
+use backend\modules\rppx\models\AdakPengajaran;
+use yii\widgets\ActiveForm;
 
-    /* @var $this yii\web\View */
-    /* @var $model backend\modules\rppx\models\PenugasanPengajaran */
-    /* @var $form yii\widgets\ActiveForm */
-    $view = ArrayHelper::map(Kuliah::find()->all(), 'kode_mk', 'nama_kul_ind');
-    $vieww = ArrayHelper::map(AdakPengajaran::find()->all(), 'pengajaran_id', 'kuliah_id');
-    $viewPengajar = ArrayHelper::map(HrdxPegawai::find()->where('pegawai_id!=0')->all(), 'pegawai_id', 'nama');
-    $viewPengajar2 = ArrayHelper::map(Kuliah::find()->where('stat_created=0')->all(), 'kuliah_id', 'nama_kul_ind');
-    $viewPengajarr = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
-    $viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
+/* @var $this yii\web\View */
+/* @var $model backend\modules\rppx\models\PenugasanPengajaran */
+/* @var $form yii\widgets\ActiveForm */
+$view = ArrayHelper::map(Kuliah::find()->all(), 'kode_mk', 'nama_kul_ind');
+$vieww = ArrayHelper::map(AdakPengajaran::find()->all(), 'pengajaran_id', 'kuliah_id');
+$pega=HrdxPegawai::find() ->all();
+$viewPengajar = ArrayHelper::map(HrdxPegawai::find()->where('pegawai_id!=0')->all(), 'pegawai_id', 'nama');
+$viewPengajar2 = ArrayHelper::map(Kuliah::find()->where('stat_created=0')->all(), 'kuliah_id', 'nama_kul_ind');
+$viewPengajarr = ArrayHelper::map(HrdxPegawai::find()->all(), 'pegawai_id', 'nama');
+$viewAsDos = ArrayHelper::map(Staf::find()->all(), 'pegawai_id', 'pegawai_id');
+
 
 ?>
 <script type="text/javascript">
@@ -54,7 +56,7 @@
 </style>
  
 <?php
-// echo $namakuliah;
+echo $namakuliah;
 $staf=Staf::find()->select('pegawai_id')->asArray()->all();
 $sta = ArrayHelper::map(HrdxPegawai::find()->select('*')->where(['pegawai_id' => $staf])->asArray()->all(), 'pegawai_id', 'nama');
 $dosen1="";$load1=0;$jlhttp=0;
@@ -157,13 +159,15 @@ if($hasil){
             <table class="tree table">
                 <thead>
                     <tr>
-                        <td id="matakuliah" align="center" style="min-width: 150px;"> Mata Kuliah </td>
-                        <td id="jumlahsks"  align="center" > Jumlah SKS </td>
-                        <td id="jumlahsks" align="center" style="min-width: 150px;"> Jumlah Tatap Muka </td>
-                        <td></td>
-                        <td colspan="2"> </td>
-                        <td></td>
-                        <td id="loaddosen1" style="min-width: 62px;"></td>
+                        <td id="matakuliah" style="min-width: 150px;"> Mata Kuliah </td>
+                        <td id="jumlahsks" > Jumlah SKS </td>
+
+                             <td id="jumlahsks" style="min-width: 150px;"> Jumlah Tatap Muka </td>
+                                                    <td></td>
+                              <td colspan="2"> </td>
+                              <td></td>
+                            <td id="loaddosen1" style="min-width: 62px;"></td>
+
                         </div>
                         <td id="asdos1" style="min-width: 150px;"></td>
                         <td></td>
@@ -173,18 +177,16 @@ if($hasil){
                 <tbody>
                   
                         <tr id="tambahRow" class="bodydosen">
-                           <td style="padding-top: 0px; margin-top: 100px;" id="test">
+                           <td style="padding-top: 0px;" id="test">
                             <br>
                                <?=$form->field($model , 'pengajaran_id')->textInput([
                                  'type' => 'text',
                                  'value'=> $namakuliah,
-                                 'align'=>'center',
                                  'disabled'=>'true',
                                  'onchange'=>'tatapM(value)'
                             ])->label(false)?>
                             <td style="max-width: 150px;padding-top: 25px;">
-                                <h3 style="margin-top: 0px;" align="center" id="jumlahs"> <?php echo $skstot; ?></h3>
-                              <!-- <input type="text" id="jumlahs" name="" value="<?php echo $skstot; ?>" disabled=""> -->
+                              <input type="text" id="jumlahs" name="" value="<?php echo $skstot; ?>" disabled="">
                               
                                 <script type="text/javascript">
                                     function so(value){
@@ -208,12 +210,14 @@ if($hasil){
                             </td>
                         </tr>
                         <tr>
-                        <td id="jumlahsks" style="min-width: 150px;" align="center"> Jumlah Kelas Riil </td>
-                        <td id="dosen<?= $jlhDosen ?>" align="center" style="min-width: 150px;" > Dosen 1 </td>
-                        <td colspan="2" style="min-width: 150px;" align="center"> Load</td>
-                    </tr>
-                    <tr>
-                        <td  style="max-width: 130px;padding-top: 20px;">
+                        <td id="jumlahsks" style="min-width: 150px;"> Jumlah Kelas Riil </td>
+
+                            <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Dosen 1 </td>
+                            <td colspan="2" style="min-width: 150px;"> Load</td>
+                           
+                        </tr>
+                        <tr>
+                            <td  style="max-width: 130px;padding-top: 20px;">
                                 <?=$form->field($model, 'jumlah_kelas_riil')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
@@ -221,61 +225,62 @@ if($hasil){
                                  'onchange'=>'rils(value)'
                             ])->label(false)?>
 
-                        </td>
-                        <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dosa(this);','id'=>'binatang'])->label('') ?>
-                        </td>
-                        <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                            </td>
+                            <td style="padding-top: 0px;" id="test">
+                                <?= $form->field($model, 'pegawai_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos1(this);','id'=>'binatang'])->label('') ?>
+                            </td>
+                            <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
-                                 'max'=>$global-1,
-                                 'onchange'=>'input2(value,"+echo $matkul->sks;+")'
+                                 'onchange'=>'input1(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;" align="center" > Dosen 2 </td>
-                        <td colspan="2" style="min-width: 150px;" > Load</td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'role_pengajar_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                        </td>
+                            </td>
+                        </tr>
+                        <tr>
+                              <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Dosen 2 </td>
+                            <td colspan="2" style="min-width: 150px;"> Load</td>
+                        </tr>
+                        <tr>
+                              <td style="padding-top: 0px;" id="test">
+                                <?= $form->field($model, 'role_pengajar_id')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos2(this);'])->label('') ?>
+                            </td>
 
-                        <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                              <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load2')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
                                  'onchange'=>'input2(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;" align="center"> Dosen 3 </td>
-                        <td colspan="2" style="min-width: 150px;" al> Load</td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 0px;" id="test">
-                                <?= $form->field($model, 'role_pengajar_id3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos(this);'])->label('') ?>
-                        </td>
-                        <td style="padding-top: 0px;" id="test2" width="200px"><br>
+                            </td>
+                        </tr>
+                        <tr>
+                              <td id="dosen<?= $jlhDosen ?>" style="min-width: 150px;"> Dosen 3 </td>
+                            <td colspan="2" style="min-width: 150px;"> Load</td>
+                        </tr>
+                        <tr>
+                              <td style="padding-top: 0px;" id="test">
+                                <?= $form->field($model, 'role_pengajar_id3')->dropDownList($viewPengajar, ['prompt' => '--Pengajar--','onChange'=>'js:Dos3(this);'])->label('') ?>
+                            </td>
+                             <td style="padding-top: 0px;" id="test2" width="200px"><br>
                                <?=$form->field($model, 'load3')->textInput([
                                  'type' => 'number',
                                  'id'=>'riil',
                                  'min'=>'0',
-                                 'onchange'=>'input2(value)'
+                                 'onchange'=>'input3(value,"+echo $matkul->sks;+")'
                             ])->label(false)?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                            </td>
+                            </tr>
+
+                            <tr>
+                                <td>
                               <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>  
-                        </td>
-                    </tr>
-                </tbody>
+                            </td>
+
+                        </tr>
+                    </tbody>
             </table>
         </div>
     </div>
@@ -323,9 +328,9 @@ if($hasil){
                         <tr bgcolor="">
                             <td>
                                 <?php if($q['nama']!='-') {?>
-                                <input type="text" value="<?= $q['nama'] ?>" disabled="" name="<?= $q['pegawai_id'] ?>"></td>
+                                <input <?php if($load>15){ ?> style="background-color: #FFA3A3;" <?php }elseif($load>4){ ?> style="background-color: #FFD64D;" <?php }else{?>style="background-color: #78E142;"<?php }?>type="text" value="<?= $q['nama'] ?>" disabled="" name="<?= $q['pegawai_id'] ?>"></td>
 
-                            <td><input id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="<?= $load ?>" disabled="" name=""></td>
+                            <td><input <?php if($load>15){ ?> style="background-color: #FFA3A3;" <?php }elseif($load>4){ ?> style="background-color: #FFD64D;" <?php }else{?>style="background-color: #78E142;"<?php }?> id="<?php echo $q['pegawai_id']; ?>"class="<?php echo $q['pegawai_id']; ?>" type="text" value="<?= $load ?>" disabled="" name=""></td>
                             <?php } ?>
                         </tr>
                         <?php $indikator++;
@@ -351,9 +356,9 @@ if($hasil){
              ?>
             if(<?php echo $load1; ?>===0){
                  var ss=baris.options[baris.selectedIndex].value;
-                // alert('baris');
+                alert('baris');
             }else{
-                // alert('del');
+                alert('del');
             }
             Dos(baris);
         }
@@ -391,15 +396,65 @@ if($hasil){
                                             penanda++;
 
                                     }
-                                    var indi=0;
-                                    var tunjuk;
+                                    var indi1=0;
+                                    var indi2=0;
+                                    var indi3=0;
+                                    var tunjuk1;
+                                    var tunjuk2;
+                                    var tunjuk3;
+                                    var vtunjuk1;
+                                    var vtunjuk2;
+                                    var vtunjuk3;
                                     var ttp=0;
                                     var ril=0;
-                                    function Dos(baris){
-                                        indi=1;
+                                    var global=100;
+                                    var globe=0;
+                                    var globs=0;
+                                    var globt=0;
+                                    function Dos1(baris){
                                         var ss=baris.options[baris.selectedIndex].value;
+                                        if(indi1!=1){
+                                            indi1=1;
 
-                                        tunjuk=ss;
+                                            tunjuk1=ss;
+                                            vtunjuk1=document.getElementById(tunjuk1).value;                                             
+                                           }else{
+                                            if(tunjuk1!=ss){
+                                                document.getElementById(tunjuk1).value=vtunjuk1;
+                                                tunjuk1= ss;
+                                                vtunjuk1 = document.getElementById(tunjuk1).value;
+                                            }
+                                           }
+                                    }
+                                    function Dos2(baris){
+                                        var ss=baris.options[baris.selectedIndex].value;
+                                        if(indi2!=1){
+                                            indi2=1;
+
+                                            tunjuk2 = ss;
+                                            vtunjuk2=document.getElementById(tunjuk2).value;
+                                        }else{
+                                            if(tunjuk2!=ss){
+                                                document.getElementById(tunjuk2).value=vtunjuk2;
+                                                tunjuk2=ss;
+                                                vtunjuk2 = document.getElementById(tunjuk2).value;
+                                            }
+                                        }
+                                    }
+                                    function Dos3(baris){
+                                        var ss=baris.options[baris.selectedIndex].value;
+                                        if(indi3!=1){
+                                            indi3=1;
+
+                                            tunjuk3 = ss;
+                                            vtunjuk3=document.getElementById(tunjuk3).value;
+                                        }else{
+                                            if(tunjuk3!=ss){
+                                                document.getElementById(tunjuk3).value=vtunjuk3;
+                                                tunjuk3=ss;
+                                                vtunjuk3 = document.getElementById(tunjuk3).value;
+                                            }
+                                        }
                                     }
                                     function tatapM(value){
                                         ttp=value;
@@ -407,19 +462,62 @@ if($hasil){
                                     function rils(value){
                                         ril=value;
                                     }
-                                    function input2(val,sks){
+                                    function input1(val,sks){
                                         
-                                        if(indi != 1){
+                                        if(indi1 != 1){
                                             alert('Pilih Dosen');
                                         }else if(ttp===0){
                                             alert('Entry Jumlah Tatap Muka');
                                         }else if(ril === 0 ){
                                             alert('Entry Jumlah kelas Rill');
                                         }else{
+                                            globe=global-val;
                                             var yy= sks+ ttp*sks +sks*ril ;
                                             var y=yy/3;
-                                            var hhhj=document.getElementById(tunjuk).value;
-                                            document.getElementById(tunjuk).value=((3+ ttp*3 +3*ril)/3)*(val/100);
+                                            var hhhj=vtunjuk1;
+                                            var hhhsil = parseFloat(hhhj)+((3+ ttp*3 +3*ril)/3)*(val/100);
+                                            document.getElementById(tunjuk1).value=hhhsil;
+
+                                        }
+                                    }
+                                    function input2(val,sks){
+                                        
+                                        if(indi2 != 1){
+                                            alert('Pilih Dosen');
+                                        }else if(ttp===0){
+                                            alert('Entry Jumlah Tatap Muka');
+                                        }else if(ril === 0 ){
+                                            alert('Entry Jumlah kelas Rill');
+                                        }else{
+                                            globs=globe-val;
+                                            var yy= sks+ ttp*sks +sks*ril ;
+                                            var y=yy/3;
+                                            var hhhj=vtunjuk2;
+                                            var hhhsil = parseFloat(hhhj)+((3+ ttp*3 +3*ril)/3)*(val/100);
+                                            document.getElementById(tunjuk2).value=hhhsil;
+                                            if(globs<=0){
+                                                alert('Batas Load adalah 100 %');
+                                            }
+                                        }
+                                    }
+                                    function input3(val,sks){
+                                        
+                                        if(indi3 != 1){
+                                            alert('Pilih Dosen');
+                                        }else if(ttp===0){
+                                            alert('Entry Jumlah Tatap Muka');
+                                        }else if(ril === 0 ){
+                                            alert('Entry Jumlah kelas Rill');
+                                        }else{
+                                            globt=globs-val;
+                                            var yy= sks+ ttp*sks +sks*ril ;
+                                            var y=yy/3;
+                                            var hhhj=vtunjuk3;
+                                            var hhhsil = parseFloat(hhhj)+((3+ ttp*3 +3*ril)/3)*(val/100);
+                                            document.getElementById(tunjuk3).value=hhhsil;
+                                            if(globt<=0){
+                                                alert('Batas Load adalah 100 %');
+                                            }
                                         }
                                     }
                                     function asdosen(baris,sks){
